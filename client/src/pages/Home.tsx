@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <div className="py-10 pl-[15rem] min-h-[100vh] h-1 bg-gray-800">
       <div className="flex gap-4 h-full w-full">
-        <div className="flex-shrink flex-grow max-w-[42rem]">
+        <div className="flex-shrink flex-grow max-w-[42rem] h-full w-full">
           <div className="rounded-md overflow-hidden">
             <Chessboard />
           </div>
