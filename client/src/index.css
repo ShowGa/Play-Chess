@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+main,
 body,
 :root {
   min-width: 100vw;

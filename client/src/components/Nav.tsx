@@ -18,11 +18,13 @@ export const navData = [
 
 const Nav = () => {
   return (
-    <div className="fixed border-r-2 border-gray-200 bg-gray-900 px-2 w-[11rem]">
+    <div className="fixed bg-gray-950 px-2 w-[11rem]">
       <div className="min-h-screen">
         <div className="flex justify-center items-center py-10">
           {/* <img alt="logo" className="w-16 h-16" /> */}
-          <FaChess className="text-6xl text-yellow-700" />
+          <Link to="/">
+            <FaChess className="text-6xl text-yellow-700" />
+          </Link>
         </div>
 
         <div className="flex flex-col gap-6">
