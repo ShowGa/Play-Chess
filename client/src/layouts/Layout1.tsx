@@ -1,11 +1,12 @@
 import { Link, Outlet } from "react-router-dom";
 
 import Header1 from "../components/Header";
+import Nav from "../components/Nav";
 
 const Layout1 = () => {
   return (
     <>
-      <Header1 />
+      <Nav />
       <main>
         <Outlet />
       </main>
