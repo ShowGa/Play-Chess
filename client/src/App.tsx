@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import PrivateRoute from "./route-protect/PrivateRoute";
 import PlayingChess from "./components/PlayingChess";
 import PlayingChess2 from "./components/PlayingChess2";
+import TestChess from "./pages/TestChess";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/playing-chess-friends" element={<PlayingChess />} />
             <Route path="/playing-chess-matching" element={<PlayingChess2 />} />
+            <Route path="/test-chess" element={<TestChess />} />
           </Route>
         </Route>
       </Routes>
