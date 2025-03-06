@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import PrivateRoute from "./route-protect/PrivateRoute";
 import PlayingChess from "./components/PlayingChess";
 import PlayingChess2 from "./components/PlayingChess2";
-import TestChess from "./pages/TestChess";
+import TestChess from "./featureTest/TestChess";
 
 function App() {
   return (
