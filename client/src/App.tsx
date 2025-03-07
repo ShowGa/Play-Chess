@@ -4,8 +4,8 @@ import Layout1 from "./layouts/Layout1";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import PrivateRoute from "./route-protect/PrivateRoute";
-import PlayingChess from "./components/PlayingChess";
-import PlayingChess2 from "./components/PlayingChess2";
+import PlayingChess from "./pages/PlayingChess";
+import PlayingChess2 from "./pages/PlayingChess2";
 import TestChess from "./featureTest/TestChess";
 
 function App() {

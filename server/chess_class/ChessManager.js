@@ -1,7 +1,7 @@
 import { Chess } from "chess.js";
 
-class GameManager {
+export class ChessManager {
   constructor() {
-    this.game = new Chess();
+    this.chessGame = new Chess();
   }
 }
