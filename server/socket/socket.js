@@ -2,8 +2,13 @@ import { v4 as uuidv4 } from "uuid";
 
 import { ChessManager } from "../chess_class/ChessManager.js";
 
-// 儲存遊戲室資料，使用 Map 存儲
 let gameRooms = new Map();
+// {
+//   roomId,
+//   players: [{ userId, username }],
+//   roomState: "waiting",
+//   gameManager: new ChessManager(),
+// }
 
 export const socketIoHandler = (io) => {
   io.on("connection", (socket) => {
@@ -20,7 +25,7 @@ export const socketIoHandler = (io) => {
       // create room
       const chessRoom = {
         roomId,
-        players: [{ userId, username }],
+        players: [{ userId, username, color: null }],
         roomState: "waiting",
         gameManager: new ChessManager(),
       };
@@ -52,8 +57,13 @@ export const socketIoHandler = (io) => {
         return;
       }
 
-      roomFound.players.push({ userId, username });
+      // random color
+      const secPlayerColor = Math.random() < 0.5 ? "w" : "b";
+
+      roomFound.players.push({ userId, username, color: secPlayerColor });
       roomFound.roomState = "start";
+      // change first player color
+      roomFound.players[0].color = secPlayerColor === "w" ? "b" : "w";
 
       socket.join(roomForJoining);
 

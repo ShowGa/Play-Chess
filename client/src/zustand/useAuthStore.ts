@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 type User = {
-  userId: number;
+  userId: string;
   username: string;
 };
 
@@ -11,8 +11,10 @@ interface UserState {
   removeUser: () => void;
 }
 
+const randomNum = Math.floor(Math.random() * 1000);
+
 const useAuthStore = create<UserState>((set) => ({
-  user: null,
+  user: { userId: `userId-${randomNum}`, username: `username-${randomNum}` }, // modify => login system
   setUser: (user: User) => set({ user }),
   removeUser: () => set({ user: null }),
 }));
