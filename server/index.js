@@ -9,4 +9,4 @@ const expressServer = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-const io = new Server(expressServer, { cors: { origin: "*" } });
+export const io = new Server(expressServer, { cors: { origin: "*" } });
