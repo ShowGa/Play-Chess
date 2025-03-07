@@ -1,6 +1,6 @@
 import { Chessboard } from "react-chessboard";
 import { useChessLogic } from "../hooks/useChessLogic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import socket from "../socket/socket";
 import { RoomInfo } from "../types/types";
@@ -16,6 +16,8 @@ const PlayingChess = () => {
 
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   console.log("roomInfo", roomInfo);
 
   // ====== function ====== //
@@ -30,10 +32,31 @@ const PlayingChess = () => {
     socket.emit("room:create", data);
   };
 
+  const joinRoom = () => {
+    const randomNum = Math.floor(Math.random() * 1000);
+
+    if (!inputRef?.current?.value) {
+      console.log("Please enter the room to join !");
+      return;
+    }
+
+    const data = {
+      userId: `user-${randomNum}`,
+      username: `Bob-${randomNum}`,
+      roomForJoining: inputRef.current.value,
+    };
+
+    if (inputRef) socket.emit("room:join", data);
+  };
+
   useEffect(() => {
     if (!socket) return;
 
     socket.on("room:created", (roomInfo: RoomInfo) => {
+      setRoomInfo(roomInfo);
+    });
+
+    socket.on("room:joined", (roomInfo: RoomInfo) => {
       setRoomInfo(roomInfo);
     });
   }, [socket]);
@@ -59,6 +82,13 @@ const PlayingChess = () => {
           >
             Create Room
           </button>
+          <button
+            className="text-white border-2 p-2 rounded-md"
+            onClick={joinRoom}
+          >
+            Join Room
+          </button>
+          <input type="text" ref={inputRef} />
         </div>
       </div>
     </div>

@@ -11,7 +11,6 @@ export const socketIoHandler = (io) => {
 
     // modify => login system
     socket.on("room:create", (data) => {
-      console.log("Get create room request !");
       // create roomId
       const roomId = uuidv4();
 
@@ -20,7 +19,7 @@ export const socketIoHandler = (io) => {
 
       // create room
       const chessRoom = {
-        name: roomId,
+        roomId,
         players: [{ userId, username }],
         roomState: "waiting",
         gameManager: new ChessManager(),
@@ -36,6 +35,30 @@ export const socketIoHandler = (io) => {
       const { gameManager, ...roomInfo } = chessRoom;
 
       socket.emit("room:created", roomInfo); // for sending to friends
+    });
+
+    socket.on("room:join", (data) => {
+      const { userId, username, roomForJoining } = data;
+
+      // find the room
+      const roomFound = gameRooms.get(roomForJoining);
+
+      if (!roomFound) {
+        socket.emit("error", { message: "Room not found." });
+        return;
+      }
+      if (roomFound.players.length >= 2) {
+        socket.emit("error", { message: "Room is full." });
+        return;
+      }
+
+      roomFound.players.push({ userId, username });
+      roomFound.roomState = "start";
+
+      socket.join(roomForJoining);
+
+      const { gameManager, ...roomInfo } = roomFound;
+      io.to(roomForJoining).emit("room:joined", roomInfo);
     });
   });
 };
