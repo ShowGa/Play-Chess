@@ -37,16 +37,14 @@ const PlayingChess = () => {
   };
 
   const joinRoom = () => {
-    const randomNum = Math.floor(Math.random() * 1000);
-
     if (!inputRef?.current?.value) {
       console.log("Please enter the room to join !");
       return;
     }
 
     const data = {
-      userId: `user-${randomNum}`,
-      username: `Bob-${randomNum}`,
+      userId: user?.userId,
+      username: user?.username,
       roomForJoining: inputRef.current.value,
     };
 
