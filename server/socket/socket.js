@@ -70,5 +70,19 @@ export const socketIoHandler = (io) => {
       const { gameManager, ...roomInfo } = roomFound;
       io.to(roomForJoining).emit("room:joined", roomInfo);
     });
+
+    socket.on("chess:move", (data) => {
+      /*
+        ========= "data" structure ==========
+        {
+          userId:
+          username:
+          color:
+          move: {}
+        }
+      */
+
+      console.log(data);
+    });
   });
 };

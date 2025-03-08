@@ -3,7 +3,6 @@ import { useChessLogic } from "../hooks/useChessLogic";
 import { useEffect, useRef, useState } from "react";
 
 import socket from "../socket/socket";
-import { Player, RoomInfo } from "../types/types";
 import useAuthStore from "../zustand/useAuthStore";
 
 const PlayingChess = () => {
@@ -13,20 +12,20 @@ const PlayingChess = () => {
     customSquareStyles,
     onDrop,
     squareThatPieceCanMoveTo,
+    you,
+    roomInfo,
+    friend,
   } = useChessLogic();
 
+  console.log(roomInfo);
+
+  // ========== Zustand state ========== //
   const { user } = useAuthStore();
 
-  const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
-  const [you, setYou] = useState<Player | undefined>(undefined);
-  const [friend, setFriend] = useState<Player | undefined>(undefined);
-
+  // ========== useRef ========== //
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // console.log("roomInfo ", roomInfo);
-  // console.log("You " + you);
-
-  // ====== function ====== //
+  // ====== Room function ====== //
   const createRoom = () => {
     const data = {
       userId: user?.userId,
@@ -50,26 +49,6 @@ const PlayingChess = () => {
 
     if (inputRef) socket.emit("room:join", data);
   };
-
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on("room:created", (roomInfo: RoomInfo) => {
-      setRoomInfo(roomInfo);
-    });
-
-    socket.on("room:joined", (roomInfo: RoomInfo) => {
-      setRoomInfo(roomInfo);
-
-      roomInfo.players.forEach((player) => {
-        if (player.userId === user?.userId) {
-          setYou(player);
-        } else {
-          setFriend(player);
-        }
-      });
-    });
-  }, [socket]);
 
   return (
     <div className="py-10 pl-[15rem] min-h-[100vh] h-1 bg-gray-800">
