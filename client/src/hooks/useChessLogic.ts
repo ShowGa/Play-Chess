@@ -1,7 +1,7 @@
 import { Chess, Square } from "chess.js";
 import { useEffect, useMemo, useState } from "react";
 import socket from "../socket/socket";
-import { Player, RoomInfo } from "../types/types";
+import { ChessMove, Player, RoomInfo } from "../types/types";
 import useAuthStore from "../zustand/useAuthStore";
 
 export const useChessLogic = () => {
@@ -9,7 +9,7 @@ export const useChessLogic = () => {
   const [game, setGame] = useState(new Chess()); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
   const [gameState, setGameState] = useState<string>("playing");
-  const [fen, setFen] = useState<string>(game.fen());
+  const [fen, setFen] = useState(game.fen());
 
   // ========== Room State ========== //
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
@@ -48,62 +48,55 @@ export const useChessLogic = () => {
     return styles;
   };
   // make a move
-  const onDrop = (sourceSquare: string, targetSquare: string) => {
-    console.log(sourceSquare + " " + targetSquare);
-    // check is your turn
-    if (game.turn() !== you?.color || roomInfo?.roomState !== "start")
-      return false;
-
+  const movePiece = (moveData: ChessMove) => {
     try {
-      const move = game.move({
-        from: sourceSquare,
-        to: targetSquare,
-        promotion: "q", // promo
-      });
+      const move = game.move(moveData);
 
       if (!move) return false;
 
-      // set fen
       setFen(game.fen());
+      updateGameStatus();
 
-      // clear the highlight
-      setHightLightSquares([]);
+      return move;
+    } catch (e) {
+      console.error("Error occurred when moving the piece: ", e);
+      return false;
+    }
+  };
 
-      // send data
+  const handleMove = (
+    from: string,
+    to: string,
+    promotion?: string,
+    isOpponentMove = false
+  ) => {
+    const move = movePiece({ from, to, promotion });
+
+    if (!move) return false;
+
+    if (!isOpponentMove) {
       socket.emit("chess:move", {
         player: you,
         roomId: roomInfo?.roomId,
         move,
       });
-      console.log("Send move from client");
-
-      updateGameStatus();
-
-      return true;
-    } catch (error) {
-      console.error("Error occurred when moving the piece: ", error);
-      return false;
     }
+
+    return true;
+  };
+
+  const onDrop = (sourceSquare: string, targetSquare: string) => {
+    // check is your turn
+    if (game.turn() !== you?.color || roomInfo?.roomState !== "start")
+      return false;
+
+    setHightLightSquares([]);
+
+    return handleMove(sourceSquare, targetSquare);
   };
   // opponent make a move
   const opponentMakeAMove = (from: string, to: string, promotion: string) => {
-    try {
-      const move = game.move({
-        from,
-        to,
-        promotion, // promo
-      });
-
-      if (!move) return false;
-
-      // set fen
-      setFen(game.fen());
-
-      updateGameStatus();
-    } catch (e) {
-      console.error("Error occurred when moving the piece: ", e);
-      return false;
-    }
+    handleMove(from, to, promotion, true);
   };
 
   const promotionMove = (
@@ -115,30 +108,7 @@ export const useChessLogic = () => {
 
     const promoPiece = promotionConverter(piece);
 
-    try {
-      const move = game.move({
-        from: promoteFromSquare,
-        to: promoteToSquare,
-        promotion: promoPiece, // promo
-      });
-
-      if (!move) return false;
-
-      // set fen
-      setFen(game.fen());
-
-      // emit
-      socket.emit("chess:move", {
-        player: you,
-        roomId: roomInfo?.roomId,
-        move,
-      });
-
-      return true;
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
+    return handleMove(promoteFromSquare, promoteToSquare, promoPiece);
   };
 
   const promotionConverter = (promo: string) => {
@@ -173,10 +143,6 @@ export const useChessLogic = () => {
 
     setGameState(newStatus);
   };
-
-  // useEffect(() => {
-  //   updateGameStatus();
-  // }, [game]);
 
   // socket.io effect
   useEffect(() => {

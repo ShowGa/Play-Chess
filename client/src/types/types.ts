@@ -5,3 +5,9 @@ export type RoomInfo = {
   players: Player[];
   roomState: string;
 };
+
+export type ChessMove = {
+  from: string;
+  to: string;
+  promotion?: string;
+};
