@@ -9,9 +9,15 @@ export class ChessManager {
     // check if the player turn is right
     if (color !== this.chessGame.turn()) return;
 
-    console.log(`From: ${move.from}, To: ${move.to}`);
+    const { from, to, promotion } = move;
 
-    const resultMove = this.chessGame.move({ from: move.from, to: move.to }); // modify => promotion
+    console.log(`From: ${from}, To: ${to}, Promotion: ${promotion}`);
+
+    const resultMove = this.chessGame.move({
+      from,
+      to,
+      promotion,
+    }); // modify => promotion
 
     if (!resultMove) return false;
 

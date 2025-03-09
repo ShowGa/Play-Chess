@@ -9,7 +9,7 @@ export const useChessLogic = () => {
   const [game, setGame] = useState(new Chess()); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
   const [gameState, setGameState] = useState<string>("playing");
-  const [fen, setFen] = useState(game.fen());
+  const [fen, setFen] = useState<string>(game.fen());
 
   // ========== Room State ========== //
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
@@ -86,12 +86,12 @@ export const useChessLogic = () => {
     }
   };
   // opponent make a move
-  const opponentMakeAMove = (from: string, to: string) => {
+  const opponentMakeAMove = (from: string, to: string, promotion: string) => {
     try {
       const move = game.move({
-        from: from,
-        to: to,
-        promotion: "q", // promo
+        from,
+        to,
+        promotion, // promo
       });
 
       if (!move) return false;
@@ -103,6 +103,55 @@ export const useChessLogic = () => {
     } catch (e) {
       console.error("Error occurred when moving the piece: ", e);
       return false;
+    }
+  };
+
+  const promotionMove = (
+    piece: string | undefined,
+    promoteFromSquare: string | undefined,
+    promoteToSquare: string | undefined
+  ) => {
+    if (!piece || !promoteFromSquare || !promoteToSquare) return false;
+
+    const promoPiece = promotionConverter(piece);
+
+    try {
+      const move = game.move({
+        from: promoteFromSquare,
+        to: promoteToSquare,
+        promotion: promoPiece, // promo
+      });
+
+      if (!move) return false;
+
+      // set fen
+      setFen(game.fen());
+
+      // emit
+      socket.emit("chess:move", {
+        player: you,
+        roomId: roomInfo?.roomId,
+        move,
+      });
+
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
+
+  const promotionConverter = (promo: string) => {
+    if (promo === "wQ" || promo === "bQ") {
+      return "q";
+    } else if (promo === "wN" || promo === "bN") {
+      return "n";
+    } else if (promo === "wR" || promo === "bR") {
+      return "r";
+    } else if (promo === "wB" || promo === "bB") {
+      return "b";
+    } else {
+      return "";
     }
   };
 
@@ -149,11 +198,14 @@ export const useChessLogic = () => {
       });
     });
 
-    socket.on("chess:moved", (moveData: { from: string; to: string }) => {
-      const { from, to } = moveData;
+    socket.on(
+      "chess:moved",
+      (moveData: { from: string; to: string; promotion: string }) => {
+        const { from, to, promotion } = moveData;
 
-      opponentMakeAMove(from, to);
-    });
+        opponentMakeAMove(from, to, promotion);
+      }
+    );
 
     return () => {
       console.log("Cleaning up socket events...");
@@ -176,5 +228,6 @@ export const useChessLogic = () => {
     friend,
     onDrop,
     squareThatPieceCanMoveTo,
+    promotionMove,
   };
 };

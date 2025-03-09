@@ -78,11 +78,9 @@ export const socketIoHandler = (io) => {
           userId:
           username:
           color:
-          move: {}
+          move: {from, to, promotion}
         }
       */
-
-      console.log("Get move data from client");
 
       // const
       const color = data.player.color;
@@ -101,6 +99,7 @@ export const socketIoHandler = (io) => {
       const resultMoveData = {
         from: resultMove.from,
         to: resultMove.to,
+        promotion: resultMove.promotion,
       };
 
       const roomSockets = io.sockets.adapter.rooms.get(roomId);

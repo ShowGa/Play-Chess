@@ -13,6 +13,7 @@ const PlayingChess = () => {
     fen,
     onDrop,
     squareThatPieceCanMoveTo,
+    promotionMove,
     you,
     roomInfo,
     friend,
@@ -62,6 +63,7 @@ const PlayingChess = () => {
               position={fen}
               onPieceDrop={onDrop}
               onSquareClick={squareThatPieceCanMoveTo}
+              onPromotionPieceSelect={promotionMove}
               boardOrientation={`${you?.color === "w" ? "white" : "black"}`}
             />
             <p className="text-red-700">{gameState}</p>
