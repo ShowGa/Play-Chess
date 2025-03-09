@@ -9,6 +9,7 @@ export const useChessLogic = () => {
   const [game, setGame] = useState(new Chess()); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
   const [gameState, setGameState] = useState<string>("playing");
+  const [fen, setFen] = useState(game.fen());
 
   // ========== Room State ========== //
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
@@ -48,13 +49,13 @@ export const useChessLogic = () => {
   };
   // make a move
   const onDrop = (sourceSquare: string, targetSquare: string) => {
-    // 確認是否為當前玩家的回合
-    if (game.turn() !== you?.color) return false;
+    console.log(sourceSquare + " " + targetSquare);
+    // check is your turn
+    if (game.turn() !== you?.color || roomInfo?.roomState !== "start")
+      return false;
 
     try {
-      // update the game board
-      const gameCopy = new Chess(game.fen());
-      const move = gameCopy.move({
+      const move = game.move({
         from: sourceSquare,
         to: targetSquare,
         promotion: "q", // promo
@@ -62,18 +63,45 @@ export const useChessLogic = () => {
 
       if (!move) return false;
 
-      // update game
-      setGame(gameCopy);
+      // set fen
+      setFen(game.fen());
 
       // clear the highlight
       setHightLightSquares([]);
 
       // send data
-      socket.emit("chess:move", { player: you, move });
+      socket.emit("chess:move", {
+        player: you,
+        roomId: roomInfo?.roomId,
+        move,
+      });
+      console.log("Send move from client");
+
+      updateGameStatus();
 
       return true;
     } catch (error) {
       console.error("Error occurred when moving the piece: ", error);
+      return false;
+    }
+  };
+  // opponent make a move
+  const opponentMakeAMove = (from: string, to: string) => {
+    try {
+      const move = game.move({
+        from: from,
+        to: to,
+        promotion: "q", // promo
+      });
+
+      if (!move) return false;
+
+      // set fen
+      setFen(game.fen());
+
+      updateGameStatus();
+    } catch (e) {
+      console.error("Error occurred when moving the piece: ", e);
       return false;
     }
   };
@@ -97,9 +125,9 @@ export const useChessLogic = () => {
     setGameState(newStatus);
   };
 
-  useEffect(() => {
-    updateGameStatus();
-  }, [game]);
+  // useEffect(() => {
+  //   updateGameStatus();
+  // }, [game]);
 
   // socket.io effect
   useEffect(() => {
@@ -120,7 +148,20 @@ export const useChessLogic = () => {
         }
       });
     });
-  }, [socket]);
+
+    socket.on("chess:moved", (moveData: { from: string; to: string }) => {
+      const { from, to } = moveData;
+
+      opponentMakeAMove(from, to);
+    });
+
+    return () => {
+      console.log("Cleaning up socket events...");
+      socket.off("room:created");
+      socket.off("room:joined");
+      socket.off("chess:moved");
+    };
+  }, []); // maybe modify
 
   // ========== variable ========== //
   const customSquareStyles = useMemo(addMovePreview, [hightLightSquares]);
@@ -129,6 +170,7 @@ export const useChessLogic = () => {
     game,
     gameState,
     customSquareStyles,
+    fen,
     you,
     roomInfo,
     friend,

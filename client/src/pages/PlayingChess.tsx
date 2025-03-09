@@ -1,15 +1,16 @@
 import { Chessboard } from "react-chessboard";
 import { useChessLogic } from "../hooks/useChessLogic";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
 
 const PlayingChess = () => {
   const {
-    game,
+    // game,
     gameState,
     customSquareStyles,
+    fen,
     onDrop,
     squareThatPieceCanMoveTo,
     you,
@@ -18,6 +19,7 @@ const PlayingChess = () => {
   } = useChessLogic();
 
   console.log(roomInfo);
+  console.log("==== Friend ====" + friend);
 
   // ========== Zustand state ========== //
   const { user } = useAuthStore();
@@ -57,7 +59,7 @@ const PlayingChess = () => {
           <div className="rounded-md overflow-hidden">
             <Chessboard
               customSquareStyles={customSquareStyles}
-              position={game.fen()}
+              position={fen}
               onPieceDrop={onDrop}
               onSquareClick={squareThatPieceCanMoveTo}
               boardOrientation={`${you?.color === "w" ? "white" : "black"}`}

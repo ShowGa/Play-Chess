@@ -82,6 +82,32 @@ export const socketIoHandler = (io) => {
         }
       */
 
+      console.log("Get move data from client");
+
+      // const
+      const color = data.player.color;
+      const move = data.move;
+      const roomId = data.roomId;
+
+      // get the room game first
+      const gameFound = gameRooms.get(roomId);
+
+      // check if the turn is for the current request
+      console.log(move);
+      const resultMove = gameFound.gameManager.move(color, move);
+
+      if (!resultMove) return;
+
+      const resultMoveData = {
+        from: resultMove.from,
+        to: resultMove.to,
+      };
+
+      const roomSockets = io.sockets.adapter.rooms.get(roomId);
+      console.log(roomSockets);
+
+      socket.to(roomId).emit("chess:moved", resultMoveData); // modify => to the opponent
+
       console.log(data);
     });
   });
