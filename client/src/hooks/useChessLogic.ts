@@ -1,7 +1,7 @@
 import { Chess, Square } from "chess.js";
 import { useEffect, useMemo, useState } from "react";
 import socket from "../socket/socket";
-import { ChessMove, Player, RoomInfo } from "../types/types";
+import { ChessMove, Player, RoomInfo, stateData } from "../types/types";
 import useAuthStore from "../zustand/useAuthStore";
 
 export const useChessLogic = () => {
@@ -11,13 +11,15 @@ export const useChessLogic = () => {
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(
     null
   );
-  const [gameState, setGameState] = useState<string>("playing");
+  const [gameState, setGameState] = useState<stateData | null>(null);
   const [fen, setFen] = useState(game.fen());
 
   // ========== Room State ========== //
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
   const [you, setYou] = useState<Player | undefined>(undefined);
   const [friend, setFriend] = useState<Player | undefined>(undefined);
+
+  console.log(gameState);
 
   // ========== Zustand state ========== //
   const { user } = useAuthStore();
@@ -67,7 +69,7 @@ export const useChessLogic = () => {
       if (!move) return false;
 
       setFen(game.fen());
-      updateGameStatus();
+      // updateGameStatus();
 
       return move;
     } catch (e) {
@@ -156,7 +158,7 @@ export const useChessLogic = () => {
       newStatus = "Tie !";
     }
 
-    setGameState(newStatus);
+    // setGameState(newStatus);
   };
 
   // socket.io effect
@@ -188,11 +190,16 @@ export const useChessLogic = () => {
       }
     );
 
+    socket.on("chess:game-state-change", (stateData: stateData) => {
+      setGameState(stateData);
+    });
+
     return () => {
       console.log("Cleaning up socket events...");
       socket.off("room:created");
       socket.off("room:joined");
       socket.off("chess:moved");
+      socket.off("chess:game-state-change");
     };
   }, []); // maybe modify
 

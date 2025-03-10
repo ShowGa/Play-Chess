@@ -5,7 +5,7 @@ import { ChessManager } from "../chess_class/ChessManager.js";
 let gameRooms = new Map();
 // {
 //   roomId,
-//   players: [{ userId, username }],
+//   players: [{ userId, username, color }],
 //   roomState: "waiting",
 //   gameManager: new ChessManager(),
 // }
@@ -88,11 +88,10 @@ export const socketIoHandler = (io) => {
       const roomId = data.roomId;
 
       // get the room game first
-      const gameFound = gameRooms.get(roomId);
+      const gameRoomFound = gameRooms.get(roomId);
 
       // check if the turn is for the current request
-      console.log(move);
-      const resultMove = gameFound.gameManager.move(color, move);
+      const resultMove = gameRoomFound.gameManager.move(color, move);
 
       if (!resultMove) return;
 
@@ -102,12 +101,16 @@ export const socketIoHandler = (io) => {
         promotion: resultMove.promotion,
       };
 
-      const roomSockets = io.sockets.adapter.rooms.get(roomId);
-      console.log(roomSockets);
-
       socket.to(roomId).emit("chess:moved", resultMoveData); // modify => to the opponent
 
-      console.log(data);
+      // check if the game checker => see if the game is over
+      const stateData = gameRoomFound.gameManager.gameStateMessageData();
+
+      if (stateData === "check") {
+        socket.to(roomId).emit("chess:game-state-change", stateData);
+      } else {
+        io.to(roomId).emit("chess:game-state-change", stateData);
+      }
     });
   });
 };

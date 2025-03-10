@@ -66,7 +66,7 @@ const PlayingChess = () => {
               onPromotionPieceSelect={promotionMove}
               boardOrientation={`${you?.color === "w" ? "white" : "black"}`}
             />
-            <p className="text-red-700">{gameState}</p>
+            <p className="text-red-700"></p>
           </div>
         </div>
         <div className="bg-gray-900 rounded-md flex-grow flex-shrink max-w-[26rem] ">

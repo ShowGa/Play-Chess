@@ -11,3 +11,10 @@ export type ChessMove = {
   to: string;
   promotion?: string;
 };
+
+export type stateData = {
+  gameState: string;
+  // checkedPiece: string;
+  gameover: boolean;
+  winner: Player | null;
+};
