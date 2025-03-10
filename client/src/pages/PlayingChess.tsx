@@ -5,6 +5,8 @@ import { useRef } from "react";
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
 
+import GameOverModal from "../components/gameoverModal";
+
 const PlayingChess = () => {
   const {
     // game,
@@ -57,7 +59,7 @@ const PlayingChess = () => {
     <div className="py-10 pl-[15rem] min-h-[100vh] h-1 bg-gray-800">
       <div className="flex gap-4 h-full w-full">
         <div className="flex-shrink flex-grow max-w-[42rem] h-full w-full">
-          <div className="rounded-md overflow-hidden">
+          <div className="rounded-md overflow-hidden relative">
             <Chessboard
               customSquareStyles={customSquareStyles}
               position={fen}
@@ -67,8 +69,12 @@ const PlayingChess = () => {
               boardOrientation={`${you?.color === "w" ? "white" : "black"}`}
             />
             <p className="text-red-700"></p>
+
+            <GameOverModal />
           </div>
         </div>
+
+        {/* right section  */}
         <div className="bg-gray-900 rounded-md flex-grow flex-shrink max-w-[26rem] ">
           <button
             className="text-white border-2 p-2 rounded-md"
