@@ -7,4 +7,5 @@ body,
 :root {
   min-width: 100vw;
   min-height: 100vh;
+  background: rgb(255, 158, 0);
 }

@@ -8,6 +8,9 @@ export const useChessLogic = () => {
   // ========== Game State ========== //
   const [game, setGame] = useState(new Chess()); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
+  const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(
+    null
+  );
   const [gameState, setGameState] = useState<string>("playing");
   const [fen, setFen] = useState(game.fen());
 
@@ -32,11 +35,15 @@ export const useChessLogic = () => {
     const newHighLightSq = moves.map((move) => move.to);
     setHightLightSquares(newHighLightSq);
   };
-  const addMovePreview = () => {
+  const addStyleToSquare = () => {
     const highlightStyle = {
       background:
         "radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.2) 65%)",
       borderRadius: "50%",
+    };
+
+    const lastMoveStyle = {
+      backgroundColor: "rgba(255, 158, 0, 0.4)",
     };
 
     const styles: Record<string, React.CSSProperties> = {};
@@ -44,6 +51,11 @@ export const useChessLogic = () => {
     hightLightSquares.forEach((square) => {
       styles[square] = highlightStyle;
     });
+
+    if (lastMove) {
+      styles[lastMove.from] = lastMoveStyle;
+      styles[lastMove.to] = lastMoveStyle;
+    }
 
     return styles;
   };
@@ -73,6 +85,9 @@ export const useChessLogic = () => {
     const move = movePiece({ from, to, promotion });
 
     if (!move) return false;
+
+    // setLastMove
+    setLastMove({ from, to });
 
     if (!isOpponentMove) {
       socket.emit("chess:move", {
@@ -182,7 +197,10 @@ export const useChessLogic = () => {
   }, []); // maybe modify
 
   // ========== variable ========== //
-  const customSquareStyles = useMemo(addMovePreview, [hightLightSquares]);
+  const customSquareStyles = useMemo(addStyleToSquare, [
+    hightLightSquares,
+    lastMove,
+  ]);
 
   return {
     game,
