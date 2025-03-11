@@ -168,6 +168,7 @@ export const useChessLogic = () => {
 
     socket.on("room:created", (roomInfo: RoomInfo) => {
       setRoomInfo(roomInfo);
+      setYou(roomInfo.players[0]);
     });
 
     socket.on("room:joined", (roomInfo: RoomInfo) => {
