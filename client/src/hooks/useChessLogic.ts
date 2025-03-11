@@ -91,6 +91,9 @@ export const useChessLogic = () => {
     // setLastMove
     setLastMove({ from, to });
 
+    // reset the game state
+    setGameState(null);
+
     if (!isOpponentMove) {
       socket.emit("chess:move", {
         player: you,
@@ -157,8 +160,6 @@ export const useChessLogic = () => {
     } else if (game.isDraw()) {
       newStatus = "Tie !";
     }
-
-    // setGameState(newStatus);
   };
 
   // socket.io effect

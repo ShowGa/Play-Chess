@@ -106,6 +106,8 @@ export const socketIoHandler = (io) => {
       // check if the game checker => see if the game is over
       const stateData = gameRoomFound.gameManager.gameStateMessageData();
 
+      if (!stateData) return;
+
       if (stateData === "check") {
         socket.to(roomId).emit("chess:game-state-change", stateData);
       } else {

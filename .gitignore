@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+README_Chess_js.md
+README_React_chessboard.md

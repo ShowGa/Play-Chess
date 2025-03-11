@@ -5,7 +5,7 @@ import { useRef } from "react";
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
 
-import GameOverModal from "../components/gameoverModal";
+import GameOverModal from "../components/GameOverModal";
 
 const PlayingChess = () => {
   const {
@@ -70,7 +70,7 @@ const PlayingChess = () => {
             />
             <p className="text-red-700"></p>
 
-            <GameOverModal />
+            {/* <GameOverModal /> */}
           </div>
         </div>
 
