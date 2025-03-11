@@ -1,15 +1,14 @@
 import { Chessboard } from "react-chessboard";
-import { useChessLogic } from "../hooks/useChessLogic";
 import { useRef } from "react";
 
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
 
 import GameOverModal from "../components/GameOverModal";
+import { useChess } from "../context/ChessContext";
 
 const PlayingChess = () => {
   const {
-    // game,
     gameState,
     customSquareStyles,
     fen,
@@ -19,7 +18,7 @@ const PlayingChess = () => {
     you,
     roomInfo,
     friend,
-  } = useChessLogic();
+  } = useChess();
 
   console.log(roomInfo);
   console.log("==== Friend ====" + friend);

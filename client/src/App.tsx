@@ -7,22 +7,28 @@ import PrivateRoute from "./route-protect/PrivateRoute";
 import PlayingChess from "./pages/PlayingChess";
 import PlayingChess2 from "./pages/PlayingChess2";
 import TestChess from "./featureTest/TestChess";
+import { ChessProvider } from "./context/ChessContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Layout1 />}>
-          <Route path="/login" element={<Login />} />
+      <ChessProvider>
+        <Routes>
+          <Route element={<Layout1 />}>
+            <Route path="/login" element={<Login />} />
 
-          <Route element={<PrivateRoute />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/playing-chess-friends" element={<PlayingChess />} />
-            <Route path="/playing-chess-matching" element={<PlayingChess2 />} />
-            <Route path="/test-chess" element={<TestChess />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/playing-chess-friends" element={<PlayingChess />} />
+              <Route
+                path="/playing-chess-matching"
+                element={<PlayingChess2 />}
+              />
+              <Route path="/test-chess" element={<TestChess />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </ChessProvider>
     </BrowserRouter>
   );
 }
