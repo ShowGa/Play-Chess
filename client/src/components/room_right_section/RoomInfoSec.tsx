@@ -1,11 +1,46 @@
 import { useChess } from "../../context/ChessContext";
+import socket from "../../socket/socket";
+import { Message } from "../../types/types";
 
 import { PiShareNetworkFill } from "react-icons/pi";
 import { BsFillSendFill } from "react-icons/bs";
 import { BsEmojiSunglassesFill } from "react-icons/bs";
+import { useEffect, useState } from "react";
 
 const RoomInfoSec = () => {
   const { roomInfo, you, friend } = useChess();
+
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [messageInput, setMessageInput] = useState<string>("");
+
+  const handleSendMessage = () => {
+    if (!roomInfo || !you) return;
+    if (messageInput.trim() === "") return;
+
+    const message: Message = {
+      roomId: roomInfo?.roomId,
+      message: messageInput,
+      sender: you?.username,
+      // receiver: friend?.username
+    };
+
+    socket.emit("message:send", message);
+
+    setMessageInput("");
+    setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
+  const handleReceiveMessage = (newMessage: Message) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
+  useEffect(() => {
+    socket.on("message:receive", handleReceiveMessage);
+
+    return () => {
+      socket.off("message:receive", handleReceiveMessage);
+    };
+  }, []);
 
   return (
     <>
@@ -36,36 +71,12 @@ const RoomInfoSec = () => {
         {/* chat messages */}
         {/* make the message box not to expend */}
         <div className="text-white max-h-[60vh] overflow-auto p-2">
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
-          <p>Hello</p>
+          {messages.map((message, index) => (
+            <div key={index}>
+              <span>{message.sender}</span>
+              <span>{message.message}</span>
+            </div>
+          ))}
         </div>
 
         {/* input section */}
@@ -74,12 +85,17 @@ const RoomInfoSec = () => {
             type="text"
             placeholder="Message"
             className="flex-grow bg-transparent border-none outline-none text-white"
+            value={messageInput}
+            onChange={(e) => setMessageInput(e.target.value)}
           />
 
           <button className="text-gray-400 text-2xl font-semibold hover:text-white self-end">
             <BsEmojiSunglassesFill />
           </button>
-          <button className="text-gray-400 text-2xl font-semibold hover:text-white">
+          <button
+            className="text-gray-400 text-2xl font-semibold hover:text-white"
+            onClick={handleSendMessage}
+          >
             <BsFillSendFill />
           </button>
         </div>

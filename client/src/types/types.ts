@@ -18,3 +18,10 @@ export type stateData = {
   gameover: boolean;
   winner: Player | null;
 };
+
+export type Message = {
+  roomId: string;
+  message: string;
+  sender: string;
+  // receiver: string;
+};

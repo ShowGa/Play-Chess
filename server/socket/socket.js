@@ -114,5 +114,15 @@ export const socketIoHandler = (io) => {
         io.to(roomId).emit("chess:game-state-change", stateData);
       }
     });
+
+    socket.on("message:send", (message) => {
+      // find if the room is exist
+      const roomFound = gameRooms.get(message.roomId);
+
+      if (!roomFound) return;
+
+      // just straightly send to the room member
+      socket.to(roomFound.roomId).emit("message:receive", message);
+    });
   });
 };
