@@ -19,7 +19,7 @@ export type stateData = {
   winner: Player | null;
 };
 
-export type Message = {
+export type MessageData = {
   roomId: string;
   message: string;
   sender: string;
