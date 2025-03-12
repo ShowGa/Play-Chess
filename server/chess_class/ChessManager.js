@@ -54,9 +54,10 @@ export class ChessManager {
     }
   }
 
+  // modify the logic
   gameStateChecker() {
-    if (this.chessGame.isCheck()) return "check";
     if (this.chessGame.isCheckmate()) return "checkmate";
+    if (this.chessGame.isCheck()) return "check";
     if (this.chessGame.isDraw()) return "tie";
     return "normal";
   }

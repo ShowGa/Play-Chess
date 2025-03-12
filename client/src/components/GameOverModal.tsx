@@ -1,4 +1,3 @@
-import { FaLeaf } from "react-icons/fa";
 import { useChess } from "../context/ChessContext";
 
 const GameOverModal = () => {
