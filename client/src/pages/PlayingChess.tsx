@@ -21,9 +21,6 @@ const PlayingChess = () => {
     friend,
   } = useChess();
 
-  console.log(roomInfo);
-  console.log("==== Friend ====" + friend);
-
   // ========== Zustand state ========== //
   const { user } = useAuthStore();
 

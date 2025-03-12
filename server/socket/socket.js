@@ -108,11 +108,7 @@ export const socketIoHandler = (io) => {
 
       if (!stateData) return;
 
-      if (stateData === "check") {
-        socket.to(roomId).emit("chess:game-state-change", stateData);
-      } else {
-        io.to(roomId).emit("chess:game-state-change", stateData);
-      }
+      io.to(roomId).emit("chess:game-state-change", stateData);
     });
 
     socket.on("message:send", (message) => {
