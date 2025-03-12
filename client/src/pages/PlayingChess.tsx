@@ -1,5 +1,5 @@
 import { Chessboard } from "react-chessboard";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
@@ -19,6 +19,7 @@ const PlayingChess = () => {
     you,
     roomInfo,
     friend,
+    showGameOverModal,
   } = useChess();
 
   // ========== Zustand state ========== //
@@ -67,7 +68,7 @@ const PlayingChess = () => {
             />
             <p className="text-red-700"></p>
 
-            {/* <GameOverModal /> */}
+            {showGameOverModal && gameState?.gameover && <GameOverModal />}
 
             {/* checked notification modal */}
             {/* <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-10">

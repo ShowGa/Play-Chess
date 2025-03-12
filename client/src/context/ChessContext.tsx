@@ -1,15 +1,27 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useState } from "react";
 import { useChessLogic } from "../hooks/useChessLogic";
 
-const ChessContext = createContext<ReturnType<typeof useChessLogic> | null>(
-  null
-);
+type ChessContextType = ReturnType<typeof useChessLogic> & {
+  showGameOverModal: boolean;
+  setShowGameOverModal: (show: boolean) => void;
+};
+
+const ChessContext = createContext<ChessContextType | null>(null);
 
 export const ChessProvider = ({ children }: { children: ReactNode }) => {
   const chessLogic = useChessLogic();
+  const [showGameOverModal, setShowGameOverModal] = useState<boolean>(true);
+
+  const contextValue: ChessContextType = {
+    ...chessLogic,
+    showGameOverModal,
+    setShowGameOverModal,
+  };
 
   return (
-    <ChessContext.Provider value={chessLogic}>{children}</ChessContext.Provider>
+    <ChessContext.Provider value={contextValue}>
+      {children}
+    </ChessContext.Provider>
   );
 };
 
