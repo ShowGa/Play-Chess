@@ -13,6 +13,9 @@ export const useChessLogic = () => {
   );
   const [gameState, setGameState] = useState<stateData | null>(null);
   const [fen, setFen] = useState(game.fen());
+  const [checkedPiece, setCheckedPiece] = useState<Square | undefined>(
+    undefined
+  );
 
   // ========== Room State ========== //
   const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null);
@@ -48,6 +51,10 @@ export const useChessLogic = () => {
       backgroundColor: "rgba(255, 158, 0, 0.4)",
     };
 
+    const checkedPieceStyle = {
+      backgroundColor: "rgba(255, 0, 0, 0.6)",
+    };
+
     const styles: Record<string, React.CSSProperties> = {};
 
     hightLightSquares.forEach((square) => {
@@ -57,6 +64,10 @@ export const useChessLogic = () => {
     if (lastMove) {
       styles[lastMove.from] = lastMoveStyle;
       styles[lastMove.to] = lastMoveStyle;
+    }
+
+    if (checkedPiece) {
+      styles[checkedPiece] = checkedPieceStyle;
     }
 
     return styles;
@@ -69,10 +80,14 @@ export const useChessLogic = () => {
       if (!move) return false;
 
       setFen(game.fen());
+      setCheckedPiece(undefined);
       // updateGameStatus();
 
       return move;
     } catch (e) {
+      // show the checked piece when the move is invalid and the gameState is check
+      showCheckedPiece();
+
       console.error("Error occurred when moving the piece: ", e);
       return false;
     }
@@ -145,6 +160,28 @@ export const useChessLogic = () => {
     }
   };
 
+  const showCheckedPiece = () => {
+    if (gameState?.gameState !== "check") return;
+
+    const turn = game.turn();
+
+    const checkedPiece = game
+      .board()
+      .flat()
+      .find((piece) => {
+        return piece && piece?.color === turn && piece?.type === "k";
+      });
+
+    // square of the checked piece
+    const square = checkedPiece?.square;
+
+    setCheckedPiece(square);
+
+    setTimeout(() => {
+      setCheckedPiece(undefined);
+    }, 2000);
+  };
+
   const updateGameStatus = () => {
     let newStatus = "";
 
@@ -209,6 +246,7 @@ export const useChessLogic = () => {
   const customSquareStyles = useMemo(addStyleToSquare, [
     hightLightSquares,
     lastMove,
+    checkedPiece,
   ]);
 
   return {

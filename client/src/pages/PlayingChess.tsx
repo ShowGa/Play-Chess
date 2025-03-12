@@ -68,6 +68,13 @@ const PlayingChess = () => {
             <p className="text-red-700"></p>
 
             {/* <GameOverModal /> */}
+
+            {/* checked notification modal */}
+            {/* <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-10">
+              <div className="bg-white p-4 rounded-md">
+                <h2 className="text-2xl font-bold">Check!</h2>
+              </div>
+            </div> */}
           </div>
         </div>
 
