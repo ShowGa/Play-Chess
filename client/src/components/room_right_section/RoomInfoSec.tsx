@@ -76,9 +76,9 @@ const RoomInfoSec = () => {
       <div className="flex-grow flex flex-col gap-2">
         {/* chat messages */}
         {/* make the message box not to expend */}
-        <div className="text-white max-h-[59vh] h-full overflow-auto overflow-x-hidden p-2">
+        <div className="text-white max-h-[55vh] h-full overflow-auto overflow-x-hidden p-2">
           {messages.map((message, index) => (
-            <div key={index} ref={lastMessageRef}>
+            <div key={index} ref={lastMessageRef} className="mb-2">
               <Message message={message} />
             </div>
           ))}
