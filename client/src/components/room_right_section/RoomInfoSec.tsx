@@ -2,11 +2,12 @@ import { useChess } from "../../context/ChessContext";
 import socket from "../../socket/socket";
 import { MessageData } from "../../types/types";
 
-import { PiShareNetworkFill } from "react-icons/pi";
 import { BsFillSendFill } from "react-icons/bs";
 import { BsEmojiSunglassesFill } from "react-icons/bs";
 import { useEffect, useState, useRef } from "react";
 import Message from "../Message";
+import toast from "react-hot-toast";
+
 const RoomInfoSec = () => {
   const { roomInfo, you, friend } = useChess();
 
@@ -14,6 +15,8 @@ const RoomInfoSec = () => {
 
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [messageInput, setMessageInput] = useState<string>("");
+
+  const [copyRoomId, setCopyRoomId] = useState<boolean>(false);
 
   const handleSendMessage = () => {
     if (!roomInfo || !you) return;
@@ -34,6 +37,12 @@ const RoomInfoSec = () => {
 
   const handleReceiveMessage = (newMessage: MessageData) => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
+  const handleCopyRoomId = () => {
+    navigator.clipboard.writeText(roomInfo?.roomId || "");
+    setCopyRoomId(true);
+    toast.success("Room ID copied to clipboard");
   };
 
   useEffect(() => {
@@ -117,13 +126,12 @@ const RoomInfoSec = () => {
       <div>
         <div className="flex items-center">
           <button
-            onClick={() =>
-              navigator.clipboard.writeText(roomInfo?.roomId || "")
-            }
+            onClick={handleCopyRoomId}
+            className={`bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ${
+              copyRoomId ? "" : "button_breath_light"
+            }`}
           >
-            <p className="text-white text-2xl font-semibold">
-              <PiShareNetworkFill />
-            </p>
+            <p className="text-white text-md font-semibold">Copy Room ID</p>
           </button>
         </div>
       </div>
