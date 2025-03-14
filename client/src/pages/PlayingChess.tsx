@@ -1,5 +1,5 @@
 import { Chessboard } from "react-chessboard";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense, lazy } from "react";
 
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
@@ -8,6 +8,10 @@ import GameOverModal from "../components/GameOverModal";
 import { useChess } from "../context/ChessContext";
 import CreateJoinSec from "../components/room_right_section/CreateJoinSec";
 import RoomInfoSec from "../components/room_right_section/RoomInfoSec";
+import RematchRequestModal from "../components/RematchConfirmModal";
+
+const WaitingModal = lazy(() => import("../components/WaitingModal"));
+
 const PlayingChess = () => {
   const {
     gameState,
@@ -20,6 +24,8 @@ const PlayingChess = () => {
     roomInfo,
     friend,
     showGameOverModal,
+    showConfirmationModal,
+    showWaitingModal,
   } = useChess();
 
   // ========== Zustand state ========== //
@@ -69,6 +75,12 @@ const PlayingChess = () => {
             <p className="text-red-700"></p>
 
             {showGameOverModal && gameState?.gameover && <GameOverModal />}
+
+            {showConfirmationModal && <RematchRequestModal />}
+
+            <Suspense fallback={null}>
+              {showWaitingModal && <WaitingModal />}
+            </Suspense>
 
             {/* checked notification modal */}
             {/* <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-10">

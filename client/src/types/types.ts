@@ -25,3 +25,14 @@ export type MessageData = {
   sender: string;
   // receiver: string;
 };
+
+export type RematchRequest = {
+  sender: string;
+  roomId: string;
+};
+
+export type RematchConfirmation = {
+  sender: string;
+  roomId: string;
+  message: string;
+};

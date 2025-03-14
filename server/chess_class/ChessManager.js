@@ -2,7 +2,7 @@ import { Chess } from "chess.js";
 
 export class ChessManager {
   constructor() {
-    this.chessGame = new Chess();
+    this.chessGame = new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1");
   }
 
   move(color, move) {
@@ -60,5 +60,9 @@ export class ChessManager {
     if (this.chessGame.isCheck()) return "check";
     if (this.chessGame.isDraw()) return "tie";
     return "normal";
+  }
+
+  rematch() {
+    this.chessGame.reset();
   }
 }

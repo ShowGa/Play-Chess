@@ -1,12 +1,21 @@
 import { Chess, Square } from "chess.js";
 import { useEffect, useMemo, useState } from "react";
 import socket from "../socket/socket";
-import { ChessMove, Player, RoomInfo, stateData } from "../types/types";
+import {
+  ChessMove,
+  Player,
+  RoomInfo,
+  RematchRequest,
+  stateData,
+  RematchConfirmation,
+} from "../types/types";
 import useAuthStore from "../zustand/useAuthStore";
 
 export const useChessLogic = () => {
   // ========== Game State ========== //
-  const [game, setGame] = useState(new Chess()); // initialize the chess game
+  const [game, setGame] = useState(
+    new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1")
+  ); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(
     null
@@ -22,7 +31,10 @@ export const useChessLogic = () => {
   const [you, setYou] = useState<Player | undefined>(undefined);
   const [friend, setFriend] = useState<Player | undefined>(undefined);
 
-  console.log(gameState);
+  // ========== Rematch ========== //
+  const [showWaitingModal, setShowWaitingModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false); // for showing confirmation modal
+  const [rematchMessage, setRematchMessage] = useState("");
 
   // ========== Zustand state ========== //
   const { user } = useAuthStore();
@@ -199,6 +211,34 @@ export const useChessLogic = () => {
     }
   };
 
+  // rematch functionality
+  const handleRematch = () => {
+    if (!you?.username || !roomInfo?.roomId) return;
+
+    const rematchRequest: RematchRequest = {
+      sender: you?.userId,
+      roomId: roomInfo?.roomId,
+    };
+
+    socket.emit("chess:rematch-request", rematchRequest);
+    setShowWaitingModal(true); // show the waiting modal
+  };
+
+  const handleRematchConfirmation = (accept: boolean) => {
+    if (!you?.username || !roomInfo?.roomId) return;
+
+    const rematchConfirmation = {
+      sender: you?.userId,
+      roomId: roomInfo?.roomId,
+      accept,
+    };
+
+    socket.emit("chess:rematch-confirmation", rematchConfirmation);
+
+    // close the modal
+    setShowConfirmationModal(false);
+  };
+
   // socket.io effect
   useEffect(() => {
     if (!socket) return;
@@ -233,12 +273,37 @@ export const useChessLogic = () => {
       setGameState(stateData);
     });
 
+    socket.on("chess:rematch-confirmation", (data: RematchConfirmation) => {
+      const { message } = data;
+
+      setShowConfirmationModal(true); // modify later => when the message needed to be shown
+      setRematchMessage(message);
+    });
+
+    socket.on("chess:game-restart", (accept: boolean) => {
+      setShowWaitingModal(false); // hide the waiting modal
+
+      if (!accept) {
+        // react-hot-toast later
+        return;
+      }
+
+      // reset the game
+      game.reset();
+      setFen(game.fen());
+      setGameState(null);
+      setLastMove(null);
+      setCheckedPiece(undefined);
+    });
+
     return () => {
       console.log("Cleaning up socket events...");
       socket.off("room:created");
       socket.off("room:joined");
       socket.off("chess:moved");
       socket.off("chess:game-state-change");
+      socket.off("chess:rematch-confirmation");
+      socket.off("chess:game-restart");
     };
   }, []); // maybe modify
 
@@ -260,5 +325,10 @@ export const useChessLogic = () => {
     onDrop,
     squareThatPieceCanMoveTo,
     promotionMove,
+    handleRematch,
+    handleRematchConfirmation,
+    showConfirmationModal,
+    rematchMessage,
+    showWaitingModal,
   };
 };

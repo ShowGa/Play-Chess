@@ -1,7 +1,14 @@
 import { useChess } from "../context/ChessContext";
 
 const GameOverModal = () => {
-  const { gameState, you, friend, setShowGameOverModal } = useChess();
+  const {
+    gameState,
+    you,
+    friend,
+    setShowGameOverModal,
+    handleRematch,
+    handleRematchConfirmation,
+  } = useChess();
 
   const isWinner = gameState?.winner?.userId === you?.userId;
   const isDraw = !gameState?.winner;
@@ -62,7 +69,13 @@ const GameOverModal = () => {
 
         {/* Buttons */}
         <div className="p-4 flex flex-col gap-2">
-          <button className="w-full bg-[#82bf56] hover:bg-[#75ad4d] text-white py-3 px-4 rounded-lg font-semibold transition-colors">
+          <button
+            className="w-full bg-[#82bf56] hover:bg-[#75ad4d] text-white py-3 px-4 rounded-lg font-semibold transition-colors"
+            onClick={() => {
+              handleRematch();
+              setShowGameOverModal(false);
+            }}
+          >
             Rematch
           </button>
           <div className="grid grid-cols-2 gap-2">

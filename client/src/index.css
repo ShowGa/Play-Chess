@@ -8,3 +8,27 @@ body,
   min-width: 100vw;
   min-height: 100vh;
 }
+
+/* bounce animation */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+}
+
+.bounce {
+  animation: bounce 1.5s infinite;
+}
+
+/* i need delay for several elements */
+.delay-1 {
+  animation-delay: -0.3s;
+}
+
+.delay-2 {
+  animation-delay: -0.15s;
+}

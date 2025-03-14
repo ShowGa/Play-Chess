@@ -122,5 +122,65 @@ export const socketIoHandler = (io) => {
       // just straightly send to the room member
       socket.to(roomFound.roomId).emit("message:receive", message);
     });
+
+    socket.on("chess:rematch-request", (data) => {
+      const { sender, roomId } = data;
+
+      const roomFound = gameRooms.get(roomId);
+
+      // check if the room is exist
+      if (!roomFound) return;
+
+      // check if the sender is in the room
+      const senderFound = roomFound.players.find(
+        (player) => player.userId === sender
+      );
+
+      if (!senderFound) return;
+
+      // roomFound rematch state => for later checking confirmation validity
+      roomFound.rematchRequested = true;
+
+      // send rematch confirmation
+      const rematchConfirmationData = {
+        ...data,
+        message: `${sender} wants to rematch.`,
+      };
+
+      socket
+        .to(roomId)
+        .emit("chess:rematch-confirmation", rematchConfirmationData);
+    });
+
+    socket.on("chess:rematch-confirmation", (data) => {
+      const { sender, roomId, accept } = data;
+
+      const roomFound = gameRooms.get(roomId);
+
+      if (!roomFound) return;
+
+      // check rematchRequested
+      if (!roomFound.rematchRequested) return;
+
+      // check if the sender is in the room
+      const senderFound = roomFound.players.find(
+        (player) => player.userId === sender
+      );
+
+      if (!senderFound) return;
+
+      if (accept) {
+        roomFound.gameManager.rematch();
+
+        // reset rematchRequested
+        roomFound.rematchRequested = false;
+
+        // send to both players in the room => use io ?
+        io.to(roomId).emit("chess:game-restart", accept);
+      } else {
+        // send the decline result to the other player
+        socket.to(roomId).emit("chess:game-restart", accept);
+      }
+    });
   });
 };
