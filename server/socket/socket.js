@@ -108,9 +108,12 @@ export const socketIoHandler = (io) => {
         gameRoomFound.players
       );
 
-      if (!stateData) return;
-
-      io.to(roomId).emit("chess:game-state-change", stateData);
+      if (stateData) {
+        if (stateData.gameover) {
+          gameRoomFound.roomState = "gameover";
+        }
+        io.to(roomId).emit("chess:game-state-change", stateData);
+      }
     });
 
     socket.on("message:send", (message) => {
@@ -128,8 +131,8 @@ export const socketIoHandler = (io) => {
 
       const roomFound = gameRooms.get(roomId);
 
-      // check if the room is exist
       if (!roomFound) return;
+      if (roomFound.roomState !== "gameover") return;
 
       // check if the sender is in the room
       const senderFound = roomFound.players.find(
@@ -140,6 +143,7 @@ export const socketIoHandler = (io) => {
 
       // roomFound rematch state => for later checking confirmation validity
       roomFound.rematchRequested = true;
+      roomFound.roomState = "rematch-pending";
 
       // send rematch confirmation
       const rematchConfirmationData = {
@@ -161,6 +165,7 @@ export const socketIoHandler = (io) => {
 
       // check rematchRequested
       if (!roomFound.rematchRequested) return;
+      if (roomFound.roomState !== "rematch-pending") return;
 
       // check if the sender is in the room
       const senderFound = roomFound.players.find(
@@ -174,11 +179,21 @@ export const socketIoHandler = (io) => {
 
         // reset rematchRequested
         roomFound.rematchRequested = false;
+        roomFound.roomState = "start";
+
+        // swap player colors
+        roomFound.players.forEach((player) => {
+          player.color = player.color === "w" ? "b" : "w";
+        });
 
         // send to both players in the room => use io ?
+        const { gameManager, ...roomInfo } = roomFound;
+        io.to(roomId).emit("room:updated", roomInfo);
         io.to(roomId).emit("chess:game-restart", accept);
       } else {
         // send the decline result to the other player
+        roomFound.rematchRequested = false;
+        roomFound.roomState = "gameover";
         socket.to(roomId).emit("chess:game-restart", accept);
       }
     });

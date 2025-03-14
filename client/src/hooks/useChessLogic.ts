@@ -296,6 +296,18 @@ export const useChessLogic = () => {
       setCheckedPiece(undefined);
     });
 
+    socket.on("room:updated", (roomInfo: RoomInfo) => {
+      setRoomInfo(roomInfo);
+      // update the player info
+      roomInfo.players.forEach((player) => {
+        if (player.userId === user?.userId) {
+          setYou(player);
+        } else {
+          setFriend(player);
+        }
+      });
+    });
+
     return () => {
       console.log("Cleaning up socket events...");
       socket.off("room:created");
@@ -304,6 +316,7 @@ export const useChessLogic = () => {
       socket.off("chess:game-state-change");
       socket.off("chess:rematch-confirmation");
       socket.off("chess:game-restart");
+      socket.off("room:updated");
     };
   }, []); // maybe modify
 
