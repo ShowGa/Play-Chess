@@ -23,7 +23,6 @@ export type MessageData = {
   roomId: string;
   message: string;
   sender: string;
-  isEmote?: boolean;
   // receiver: string;
 };
 

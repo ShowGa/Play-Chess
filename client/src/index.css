@@ -45,3 +45,33 @@ body,
     box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
   }
 }
+
+/* emote message box */
+.emote-message-box {
+  width: 5.5rem;
+  height: 5.5rem;
+  position: absolute;
+  left: 50%;
+  bottom: -65%;
+  translate: y-full;
+  background-color: #374151; /* bg-gray-700 */
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+  transform: translateX(-50%);
+}
+
+/* emote message box triangle */
+.emote-message-box::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #374151; /* bg-gray-700 */
+
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}

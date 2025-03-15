@@ -106,32 +106,38 @@ const RoomInfoSec = () => {
       {/* players section */}
       <div className="bg-gray-800 p-4 rounded-lg">
         <h3 className="text-white text-lg font-semibold mb-3">Players</h3>
-        <div className="flex flex-col gap-2">
+        <div className="flex justify-evenly gap-2">
+          {friend && (
+            <div className="flex items-center gap-2 relative">
+              <div className="flex flex-col items-center gap-2 text-white">
+                <img
+                  src={`https://avatar.iran.liara.run/public/boy?username=${friend.username}`}
+                  alt="avatar"
+                  className="w-12 h-12 rounded-full"
+                />
+                <span>{friend.color === "w" ? "White" : "Black"} (Friend)</span>
+              </div>
+
+              {/* friend emote show box */}
+              {friendEmote && friendEmote.sender === friend.username && (
+                <EmoteMessageBox emoteUrl={friendEmote.emoteUrl} />
+              )}
+            </div>
+          )}
+
           {you && (
             <div className="flex items-center gap-2 relative">
-              <div className="flex items-center gap-2 text-white">
-                <span className="bg-green-500 w-2 h-2 rounded-full"></span>
-                <span>
-                  {you.username} (You) - {you.color === "w" ? "White" : "Black"}
-                </span>
+              <div className="flex flex-col items-center gap-2 text-white">
+                <img
+                  src={`https://avatar.iran.liara.run/public/boy?username=${you.username}`}
+                  alt="avatar"
+                  className="w-12 h-12 rounded-full"
+                />
+                <span>{you.color === "w" ? "White" : "Black"} (You)</span>
               </div>
               {/* your emote show box */}
               {yourEmote && yourEmote.sender === you.username && (
                 <EmoteMessageBox emoteUrl={yourEmote.emoteUrl} />
-              )}
-            </div>
-          )}
-          {friend && (
-            <div className="flex items-center gap-2 relative">
-              <div className="flex items-center gap-2 text-white">
-                <span className="bg-green-500 w-2 h-2 rounded-full"></span>
-                <span>
-                  {friend.username} - {friend.color === "w" ? "White" : "Black"}
-                </span>
-              </div>
-              {/* friend emote show box */}
-              {friendEmote && friendEmote.sender === friend.username && (
-                <EmoteMessageBox emoteUrl={friendEmote.emoteUrl} />
               )}
             </div>
           )}
