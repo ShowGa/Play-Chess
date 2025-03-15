@@ -14,9 +14,15 @@ const Message = ({ message }: { message: MessageData }) => {
   return (
     <div className={`chat ${messagePosition}`}>
       <div
-        className={`chat-bubble ${messageStyle} bg-opacity-20  backdrop-blur-xl`}
+        className={`chat-bubble ${messageStyle} bg-opacity-20 backdrop-blur-xl ${
+          message.isEmote ? "!bg-transparent !p-0" : ""
+        }`}
       >
-        {message.message}
+        {message.isEmote ? (
+          <img src={message.message} alt="emote" className="w-12 h-12" />
+        ) : (
+          message.message
+        )}
       </div>
     </div>
   );

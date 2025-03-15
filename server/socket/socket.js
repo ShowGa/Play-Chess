@@ -126,6 +126,19 @@ export const socketIoHandler = (io) => {
       socket.to(roomFound.roomId).emit("message:receive", message);
     });
 
+    socket.on("emote:send", (data) => {
+      // find if the room exists
+      const roomFound = gameRooms.get(data.roomId);
+
+      if (!roomFound) return;
+
+      // send the emote to other room members
+      socket.to(roomFound.roomId).emit("emote:receive", {
+        sender: data.sender,
+        emoteUrl: data.emoteUrl,
+      });
+    });
+
     socket.on("chess:rematch-request", (data) => {
       const { sender, roomId } = data;
 

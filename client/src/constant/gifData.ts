@@ -1,0 +1,26 @@
+const gifData: string[] = [
+  "https://cdn.betterttv.net/emote/5e4e7a1f08b4447d56a92967/3x.webp",
+  "https://cdn.betterttv.net/emote/5af84b9e766af63db43bf6b9/3x.webp",
+  "https://cdn.betterttv.net/emote/57719a9a6bdecd592c3ad59b/3x.webp",
+  "https://cdn.betterttv.net/emote/55b6f480e66682f576dd94f5/3x.webp",
+  "https://cdn.betterttv.net/emote/5c548025009a2e73916b3a37/3x.webp",
+  "https://cdn.betterttv.net/emote/5a311dd16405a95e4b0d4967/3x.webp",
+  "https://cdn.betterttv.net/emote/5e8b86328fb1ca5cde5866b5/3x.webp",
+  "https://cdn.betterttv.net/emote/5d793f2e14011815db9377d2/3x.webp",
+  "https://cdn.betterttv.net/emote/62877d073c6f14b688484870/3x.webp",
+  "https://cdn.betterttv.net/emote/5fa939a9f32aa26441c83a70/3x.webp",
+  "https://cdn.betterttv.net/emote/675f215c3cecd93633bbeefe/3x.webp",
+  "https://cdn.betterttv.net/emote/5b35ca08392c604c5fd81874/3x.webp",
+  "https://cdn.betterttv.net/emote/591ad4992f456546af54fdcd/3x.webp",
+  "https://cdn.betterttv.net/emote/638cd4ecb9076d0aaebde732/3x.webp",
+  "https://cdn.betterttv.net/emote/5b4ce43d0197c6394dc49465/3x.webp",
+  "https://cdn.betterttv.net/emote/5cb9176c750fbb4a2533fc42/3x.webp",
+  "https://cdn.betterttv.net/emote/602ad7b782b7c45eb1c94e23/3x.webp",
+  "https://cdn.betterttv.net/emote/5d20a55de1cfde376e532972/3x.webp",
+  "https://cdn.betterttv.net/emote/5acdc7cb31ca5d147369ead8/3x.webp",
+  "https://cdn.betterttv.net/emote/587d26d976a3c4756d667153/3x.webp",
+  "https://cdn.betterttv.net/emote/5ce66e8c1281d44f03de8051/3x.webp",
+  "https://cdn.betterttv.net/emote/5f395e0bb2efd65d77e8124f/3x.webp",
+];
+
+export default gifData;
