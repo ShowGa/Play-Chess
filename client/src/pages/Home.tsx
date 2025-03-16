@@ -1,4 +1,5 @@
 import { Chessboard } from "react-chessboard";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -34,7 +35,12 @@ const Home = () => {
             </Link>
 
             <Link
-              to="/playing-chess-matching"
+              onClick={() => {
+                toast("Feature releasing soon...", {
+                  icon: "🔨",
+                });
+              }}
+              to=""
               className="flex items-center bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg transition-colors"
             >
               <div className="bg-white/20 p-2 rounded-lg mr-4">
