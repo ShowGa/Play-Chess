@@ -10,8 +10,12 @@ import {
   RematchConfirmation,
 } from "../types/types";
 import useAuthStore from "../zustand/useAuthStore";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export const useChessLogic = () => {
+  const navigate = useNavigate();
+
   // ========== Game State ========== //
   const [game, setGame] = useState(
     new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1")
@@ -239,6 +243,32 @@ export const useChessLogic = () => {
     setShowConfirmationModal(false);
   };
 
+  // Reset all states to initial values
+  const resetGameState = () => {
+    setGame(new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1"));
+    setHightLightSquares([]);
+    setLastMove(null);
+    setGameState(null);
+    setFen(game.fen());
+    setCheckedPiece(undefined);
+    setRoomInfo(null);
+    setYou(undefined);
+    setFriend(undefined);
+    setShowWaitingModal(false);
+    setShowConfirmationModal(false);
+    setRematchMessage("");
+  };
+
+  // Handle player disconnection
+  const handlePlayerDisconnection = () => {
+    toast.error("A player has disconnected. Game ended.", {
+      duration: 3000,
+    });
+
+    resetGameState();
+    navigate("/"); // Navigate to home page
+  };
+
   // socket.io effect
   useEffect(() => {
     if (!socket) return;
@@ -308,6 +338,10 @@ export const useChessLogic = () => {
       });
     });
 
+    socket.on("player:disconnected", () => {
+      handlePlayerDisconnection();
+    });
+
     return () => {
       console.log("Cleaning up socket events...");
       socket.off("room:created");
@@ -317,8 +351,9 @@ export const useChessLogic = () => {
       socket.off("chess:rematch-confirmation");
       socket.off("chess:game-restart");
       socket.off("room:updated");
+      socket.off("player:disconnected");
     };
-  }, []); // maybe modify
+  }, [navigate]); // Add navigate to dependencies
 
   // ========== variable ========== //
   const customSquareStyles = useMemo(addStyleToSquare, [

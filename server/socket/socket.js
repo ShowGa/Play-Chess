@@ -14,6 +14,9 @@ export const socketIoHandler = (io) => {
   io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
 
+    // Store socket id and room mapping
+    let currentRoom = null;
+
     // modify => login system
     socket.on("room:create", (data) => {
       // create roomId
@@ -40,6 +43,8 @@ export const socketIoHandler = (io) => {
       const { gameManager, ...roomInfo } = chessRoom;
 
       socket.emit("room:created", roomInfo); // for sending to friends
+
+      currentRoom = roomId;
     });
 
     socket.on("room:join", (data) => {
@@ -69,6 +74,8 @@ export const socketIoHandler = (io) => {
 
       const { gameManager, ...roomInfo } = roomFound;
       io.to(roomForJoining).emit("room:joined", roomInfo);
+
+      currentRoom = roomForJoining;
     });
 
     socket.on("chess:move", (data) => {
@@ -208,6 +215,21 @@ export const socketIoHandler = (io) => {
         roomFound.rematchRequested = false;
         roomFound.roomState = "gameover";
         socket.to(roomId).emit("chess:game-restart", accept);
+      }
+    });
+
+    socket.on("disconnect", () => {
+      console.log(`User disconnected: ${socket.id}`);
+
+      if (currentRoom) {
+        const room = gameRooms.get(currentRoom);
+        if (room) {
+          // Notify other players in the room about disconnection
+          socket.to(currentRoom).emit("player:disconnected");
+
+          // Delete the room
+          gameRooms.delete(currentRoom);
+        }
       }
     });
   });
