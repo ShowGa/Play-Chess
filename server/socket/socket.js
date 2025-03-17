@@ -232,5 +232,54 @@ export const socketIoHandler = (io) => {
         }
       }
     });
+
+    socket.on("call:request", (data) => {
+      console.log(data);
+
+      const { userId, peerId, roomId } = data;
+
+      // find the room
+      const roomFound = gameRooms.get(roomId);
+      if (!roomFound) return;
+
+      // find the caller
+      const callerFound = roomFound.players.find(
+        (player) => player.userId === userId
+      );
+      if (!callerFound) return;
+
+      // check if the room has enough players
+      if (roomFound.players.length < 2) return;
+
+      socket.to(roomId).emit("call:request", {
+        userId: peerId,
+        peerId: userId,
+        roomId: roomId,
+      });
+    });
+
+    socket.on("call:answer", (data) => {
+      console.log(data);
+
+      const { userId, peerId, roomId, accept } = data; // answerer data
+
+      // find the room
+      const roomFound = gameRooms.get(roomId);
+      if (!roomFound) return;
+
+      // find the answerer
+      const answererFound = roomFound.players.find(
+        (player) => player.userId === userId
+      );
+      if (!answererFound) return;
+
+      // send the call answer to the caller
+      socket.to(roomId).emit("call:answer", {
+        userId: peerId,
+        peerId: userId,
+        roomId: roomId,
+        accept: accept,
+      });
+    });
   });
 };
