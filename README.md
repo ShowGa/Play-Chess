@@ -38,15 +38,15 @@ A real-time online chess platform that allows players to engage in chess matches
 
 ### Real-time Chess Gameplay
 
-![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature1.png?token=GHSAT0AAAAAAC6ITMNLXFM7TFK4PICOGG3EZ6Y45RA)
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature1.png)
 
 ### Interactive Communication
 
-![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature2.png?token=GHSAT0AAAAAAC6ITMNK3Y5HBYXMX6PKQOQSZ6Y453A)
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature2.png)
 
 ### Game Management
 
-![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature3.png?token=GHSAT0AAAAAAC6ITMNKFVCQIMRIL7HMPJSOZ6Y46DQ)
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature3.png)
 
 ## Hosting
 
@@ -101,15 +101,15 @@ This project wouldn't be possible without these amazing libraries:
 
 ### 即時西洋棋對弈
 
-![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature1.png?token=GHSAT0AAAAAAC6ITMNLXFM7TFK4PICOGG3EZ6Y45RA)
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature1.png)
 
 ### 互動交流
 
-![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature2.png?token=GHSAT0AAAAAAC6ITMNK3Y5HBYXMX6PKQOQSZ6Y453A)
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature2.png)
 
 ### 遊戲管理
 
-![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature3.png?token=GHSAT0AAAAAAC6ITMNKFVCQIMRIL7HMPJSOZ6Y46DQ)
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature3.png)
 
 ## 部署資訊
 
