@@ -6,16 +6,16 @@ A real-time online chess platform that allows players to engage in chess matches
 
 - Frontend:
 
-  - React.js
-  - TypeScript
-  - Tailwind CSS
-  - Socket.IO Client
+  - [React.js](https://github.com/facebook/react)
+  - [TypeScript](https://github.com/microsoft/TypeScript)
+  - [Tailwind CSS](https://tailwindcss.com/)
+  - [Socket.IO Client](https://socket.io/)
 
 - Backend:
   - Node.js
-  - Express.js
+  - [Express.js](https://expressjs.com/)
   - Socket.IO
-  - MongoDB
+  - MongoDB (Utilize in future functionality)
 
 ## Features
 
@@ -34,7 +34,19 @@ A real-time online chess platform that allows players to engage in chess matches
 - Game Management
   - Friend invitation system
   - Rematch functionality
-  - Game state persistence
+  - Game state persistence (Coming soon in future)
+
+### Real-time Chess Gameplay
+
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature1.png?token=GHSAT0AAAAAAC6ITMNLXFM7TFK4PICOGG3EZ6Y45RA)
+
+### Interactive Communication
+
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature2.png?token=GHSAT0AAAAAAC6ITMNK3Y5HBYXMX6PKQOQSZ6Y453A)
+
+### Game Management
+
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature3.png?token=GHSAT0AAAAAAC6ITMNKFVCQIMRIL7HMPJSOZ6Y46DQ)
 
 ## Hosting
 
@@ -57,16 +69,16 @@ This project wouldn't be possible without these amazing libraries:
 
 - 前端:
 
-  - React.js
-  - TypeScript
-  - Tailwind CSS
-  - Socket.IO Client
+  - [React.js](https://github.com/facebook/react)
+  - [TypeScript](https://github.com/microsoft/TypeScript)
+  - [Tailwind CSS](https://tailwindcss.com/)
+  - [Socket.IO Client](https://socket.io/)
 
 - 後端:
   - Node.js
-  - Express.js
+  - [Express.js](https://expressjs.com/)
   - Socket.IO
-  - MongoDB
+  - MongoDB (未來功能使用)
 
 ## 功能特色
 
@@ -85,7 +97,19 @@ This project wouldn't be possible without these amazing libraries:
 - 遊戲管理
   - 好友邀請系統
   - 重新對戰功能
-  - 遊戲狀態保存
+  - 遊戲狀態保存（即將推出）
+
+### 即時西洋棋對弈
+
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature1.png?token=GHSAT0AAAAAAC6ITMNLXFM7TFK4PICOGG3EZ6Y45RA)
+
+### 互動交流
+
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature2.png?token=GHSAT0AAAAAAC6ITMNK3Y5HBYXMX6PKQOQSZ6Y453A)
+
+### 遊戲管理
+
+![image](https://raw.githubusercontent.com/ShowGa/Pic-repository/refs/heads/main/Chess-Project-feature3.png?token=GHSAT0AAAAAAC6ITMNKFVCQIMRIL7HMPJSOZ6Y46DQ)
 
 ## 部署資訊
 
