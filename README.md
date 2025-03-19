@@ -23,6 +23,8 @@ A real-time online chess platform that allows players to engage in chess matches
 
 ## Features
 
+💡 Quick Test: After the first initialization of the friend battle mode, the chessboard will be in an endgame position. Move the white queen from c6 to b6 to end the game and test the rematch functionality!
+
 - [Real-time Chess Gameplay](#real-time-chess-gameplay)
 
   - Live multiplayer chess matches with friends
@@ -87,6 +89,8 @@ This project wouldn't be possible without these amazing libraries:
   - MongoDB (未來功能使用)
 
 ## 功能特色
+
+💡 快速測試：好友對戰模式第一次初始化好棋局之後，棋盤為殘局，將白色皇后從 c6 移動到 b6 即可結束遊戲並測試重新對戰功能！
 
 - [即時西洋棋對弈](#即時西洋棋對弈)
 
