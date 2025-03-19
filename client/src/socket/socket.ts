@@ -1,6 +1,8 @@
 import SocketIO from "socket.io-client";
 
-const socket = SocketIO("http://localhost:8080");
+const API_URL = import.meta.env.VITE_API_URL;
+
+const socket = SocketIO(API_URL || "http://localhost:8080");
 
 console.log("Socket client initialize");
 

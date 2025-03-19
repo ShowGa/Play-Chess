@@ -12,6 +12,8 @@ server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-export const io = new Server(server, { cors: { origin: "*" } });
+export const io = new Server(server, {
+  cors: { origin: process.env.FRONTEND_URL || "*" },
+});
 
 socketIoHandler(io);
