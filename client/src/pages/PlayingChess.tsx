@@ -1,5 +1,5 @@
 import { Chessboard } from "react-chessboard";
-import { useEffect, useRef, useState, Suspense, lazy } from "react";
+import { useRef, Suspense, lazy } from "react";
 
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
@@ -22,7 +22,6 @@ const PlayingChess = () => {
     promotionMove,
     you,
     roomInfo,
-    friend,
     showGameOverModal,
     showConfirmationModal,
     showWaitingModal,

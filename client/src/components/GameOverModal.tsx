@@ -1,14 +1,8 @@
 import { useChess } from "../context/ChessContext";
 
 const GameOverModal = () => {
-  const {
-    gameState,
-    you,
-    friend,
-    setShowGameOverModal,
-    handleRematch,
-    handleRematchConfirmation,
-  } = useChess();
+  const { gameState, you, friend, setShowGameOverModal, handleRematch } =
+    useChess();
 
   const isWinner = gameState?.winner?.userId === you?.userId;
   const isDraw = !gameState?.winner;

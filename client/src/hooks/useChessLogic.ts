@@ -198,24 +198,25 @@ export const useChessLogic = () => {
     }, 2000);
   };
 
-  const updateGameStatus = () => {
-    let newStatus = "";
+  // const updateGameStatus = () => {
+  //   let newStatus = "";
 
-    if (game.isCheck()) {
-      newStatus = "Check！";
-    }
+  //   if (game.isCheck()) {
+  //     newStatus = "Check！";
+  //   }
 
-    if (game.isCheckmate()) {
-      newStatus =
-        "Check Mate ! Game Over , " +
-        (game.turn() === "w" ? "Black" : "White") +
-        "Win！";
-    } else if (game.isDraw()) {
-      newStatus = "Tie !";
-    }
-  };
+  //   if (game.isCheckmate()) {
+  //     newStatus =
+  //       "Check Mate ! Game Over , " +
+  //       (game.turn() === "w" ? "Black" : "White") +
+  //       "Win！";
+  //   } else if (game.isDraw()) {
+  //     newStatus = "Tie !";
+  //   }
+  // };
 
   // rematch functionality
+
   const handleRematch = () => {
     if (!you?.username || !roomInfo?.roomId) return;
 
