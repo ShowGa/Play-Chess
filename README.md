@@ -4,6 +4,8 @@
 
 A real-time online chess platform that allows players to engage in chess matches with friends, featuring instant messaging and interactive emotes.
 
+🎮 Play now: [https://chessing.onrender.com](https://chessing.onrender.com)
+
 ## Built With (Tech Stack)
 
 - Frontend:
@@ -66,6 +68,8 @@ This project wouldn't be possible without these amazing libraries:
 # Chessing [中文版]
 
 一個即時線上西洋棋平台，讓玩家能與好友進行對弈，並具備即時通訊和互動表情功能。
+
+🎮 立即遊玩：[https://chessing.onrender.com](https://chessing.onrender.com)
 
 ## 使用技術 (Tech Stack)
 
