@@ -6,8 +6,6 @@ const TestChess = () => {
   const [game, setGame] = useState(new Chess()); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
 
-  console.log(hightLightSquares);
-
   // ========== function ========== //
   // custom square styles (show square that piece can move to)
   const squareThatPieceCanMoveTo = (square: Square) => {

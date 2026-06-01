@@ -12,7 +12,7 @@ let gameRooms = new Map();
 
 export const socketIoHandler = (io) => {
   io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
+    // console.log(`User connected: ${socket.id}`);
 
     // Store socket id and room mapping
     let currentRoom = null;
@@ -112,7 +112,7 @@ export const socketIoHandler = (io) => {
 
       // check if the game checker => see if the game is over
       const stateData = gameRoomFound.gameManager.gameStateMessageData(
-        gameRoomFound.players
+        gameRoomFound.players,
       );
 
       if (stateData) {
@@ -156,7 +156,7 @@ export const socketIoHandler = (io) => {
 
       // check if the sender is in the room
       const senderFound = roomFound.players.find(
-        (player) => player.userId === sender
+        (player) => player.userId === sender,
       );
 
       if (!senderFound) return;
@@ -189,7 +189,7 @@ export const socketIoHandler = (io) => {
 
       // check if the sender is in the room
       const senderFound = roomFound.players.find(
-        (player) => player.userId === sender
+        (player) => player.userId === sender,
       );
 
       if (!senderFound) return;
@@ -219,7 +219,7 @@ export const socketIoHandler = (io) => {
     });
 
     socket.on("disconnect", () => {
-      console.log(`User disconnected: ${socket.id}`);
+      // console.log(`User disconnected: ${socket.id}`);
 
       if (currentRoom) {
         const room = gameRooms.get(currentRoom);
@@ -234,7 +234,7 @@ export const socketIoHandler = (io) => {
     });
 
     socket.on("call:request", (data) => {
-      console.log(data);
+      // console.log(data);
 
       const { userId, peerId, roomId } = data;
 
@@ -244,7 +244,7 @@ export const socketIoHandler = (io) => {
 
       // find the caller
       const callerFound = roomFound.players.find(
-        (player) => player.userId === userId
+        (player) => player.userId === userId,
       );
       if (!callerFound) return;
 
@@ -259,7 +259,7 @@ export const socketIoHandler = (io) => {
     });
 
     socket.on("call:answer", (data) => {
-      console.log(data);
+      // console.log(data);
 
       const { userId, peerId, roomId, accept } = data; // answerer data
 
@@ -269,7 +269,7 @@ export const socketIoHandler = (io) => {
 
       // find the answerer
       const answererFound = roomFound.players.find(
-        (player) => player.userId === userId
+        (player) => player.userId === userId,
       );
       if (!answererFound) return;
 

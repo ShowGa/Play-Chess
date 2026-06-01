@@ -18,16 +18,16 @@ export const useChessLogic = () => {
 
   // ========== Game State ========== //
   const [game, setGame] = useState(
-    new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1")
+    new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1"),
   ); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(
-    null
+    null,
   );
   const [gameState, setGameState] = useState<stateData | null>(null);
   const [fen, setFen] = useState(game.fen());
   const [checkedPiece, setCheckedPiece] = useState<Square | undefined>(
-    undefined
+    undefined,
   );
 
   // ========== Room State ========== //
@@ -113,7 +113,7 @@ export const useChessLogic = () => {
     from: string,
     to: string,
     promotion?: string,
-    isOpponentMove = false
+    isOpponentMove = false,
   ) => {
     const move = movePiece({ from, to, promotion });
 
@@ -153,7 +153,7 @@ export const useChessLogic = () => {
   const promotionMove = (
     piece: string | undefined,
     promoteFromSquare: string | undefined,
-    promoteToSquare: string | undefined
+    promoteToSquare: string | undefined,
   ) => {
     if (!piece || !promoteFromSquare || !promoteToSquare) return false;
 
@@ -297,7 +297,7 @@ export const useChessLogic = () => {
         const { from, to, promotion } = moveData;
 
         opponentMakeAMove(from, to, promotion);
-      }
+      },
     );
 
     socket.on("chess:game-state-change", (stateData: stateData) => {
@@ -344,7 +344,6 @@ export const useChessLogic = () => {
     });
 
     return () => {
-      console.log("Cleaning up socket events...");
       socket.off("room:created");
       socket.off("room:joined");
       socket.off("chess:moved");
