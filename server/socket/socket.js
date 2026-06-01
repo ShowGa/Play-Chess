@@ -19,6 +19,11 @@ export const socketIoHandler = (io) => {
 
     // modify => login system
     socket.on("room:create", (data) => {
+      // check the room amount hit the limitation (25)
+      if (gameRooms.size >= 20) {
+        return socket.emit("server:full");
+      }
+
       // create roomId
       const roomId = uuidv4();
 
