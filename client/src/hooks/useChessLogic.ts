@@ -13,13 +13,13 @@ import useAuthStore from "../zustand/useAuthStore";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+// "3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1"  ===> test match fen
+
 export const useChessLogic = () => {
   const navigate = useNavigate();
 
   // ========== Game State ========== //
-  const [game, setGame] = useState(
-    new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1"),
-  ); // initialize the chess game
+  const [game, setGame] = useState(new Chess()); // initialize the chess game
   const [hightLightSquares, setHightLightSquares] = useState<string[]>([]); // for preview move
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(
     null,
@@ -246,11 +246,13 @@ export const useChessLogic = () => {
 
   // Reset all states to initial values
   const resetGameState = () => {
-    setGame(new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1"));
+    const newGame = new Chess();
+
+    setGame(newGame);
     setHightLightSquares([]);
     setLastMove(null);
     setGameState(null);
-    setFen(game.fen());
+    setFen(newGame.fen());
     setCheckedPiece(undefined);
     setRoomInfo(null);
     setYou(undefined);

@@ -2,7 +2,9 @@ import { Chess } from "chess.js";
 
 export class ChessManager {
   constructor() {
-    this.chessGame = new Chess("3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1");
+    this.chessGame = new Chess();
+
+    // "3k4/8/2Q2N2/4R3/8/2R5/8/3K4 w - - 0 1"  ====> test match fen
   }
 
   move(color, move) {

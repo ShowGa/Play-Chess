@@ -27,6 +27,8 @@ const PlayingChess = () => {
     showWaitingModal,
   } = useChess();
 
+  console.log(fen);
+
   // ========== Zustand state ========== //
   const { user } = useAuthStore();
 
