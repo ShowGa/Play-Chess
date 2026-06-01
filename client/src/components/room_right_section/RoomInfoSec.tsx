@@ -111,7 +111,7 @@ const RoomInfoSec = () => {
             <div className="flex items-center gap-2 relative">
               <div className="flex flex-col items-center gap-2 text-white">
                 <img
-                  src={`https://avatar.iran.liara.run/public/boy?username=${friend.username}`}
+                  src={`https://api.dicebear.com/10.x/lorelei/svg?seed=${friend.username}`}
                   alt="avatar"
                   className="w-12 h-12 rounded-full"
                 />
@@ -129,7 +129,7 @@ const RoomInfoSec = () => {
             <div className="flex items-center gap-2 relative">
               <div className="flex flex-col items-center gap-2 text-white">
                 <img
-                  src={`https://avatar.iran.liara.run/public/boy?username=${you.username}`}
+                  src={`https://api.dicebear.com/10.x/lorelei/svg?seed=${you.username}`}
                   alt="avatar"
                   className="w-12 h-12 rounded-full"
                 />
