@@ -1,8 +1,28 @@
+import { useEffect, useState } from "react";
 import { Chessboard } from "react-chessboard";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import socket from "../socket/socket";
 
 const Home = () => {
+  const [socketConnected, setSocketConnected] = useState(socket.connected);
+
+  const handleConnectSocketServer = () => {
+    socket.connect();
+  };
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      setSocketConnected(true);
+
+      toast.success("Connect to server successfully");
+    });
+
+    return () => {
+      socket.off("connect");
+    };
+  }, []);
+
   return (
     <div className="py-10 pl-[15rem] min-h-[100vh] h-1 bg-gray-800">
       <div className="flex gap-4 h-full w-full">
@@ -19,42 +39,66 @@ const Home = () => {
           </h1>
 
           <div className="flex flex-col gap-4">
-            <Link
-              to="/playing-chess-friends"
-              className="flex items-center bg-[#82bf56] hover:bg-[#75ad4d] text-white p-4 rounded-lg transition-colors"
-            >
-              <div className="bg-white/20 p-2 rounded-lg mr-4">
-                <span className="text-2xl">👥</span>
-              </div>
-              <div className="text-left">
-                <div className="text-xl font-semibold">Play With Friends</div>
-                <div className="text-sm text-white/80">
-                  Play with your friends by sharing the room id
+            {!socketConnected && (
+              <button
+                className="flex items-center bg-[#82bf56] hover:bg-[#75ad4d] text-white p-4 rounded-lg transition-colors"
+                onClick={handleConnectSocketServer}
+              >
+                <div className="bg-white/20 p-2 rounded-lg mr-4">
+                  <span className="text-2xl">👥</span>
                 </div>
-              </div>
-            </Link>
+                <div className="text-left">
+                  <div className="text-xl font-semibold">
+                    Connect to the server
+                  </div>
+                  <div className="text-sm text-white/80">
+                    Try to connect to server, play with online opponent
+                  </div>
+                </div>
+              </button>
+            )}
 
-            <Link
-              onClick={() => {
-                toast("Feature releasing soon...", {
-                  icon: "🔨",
-                });
-              }}
-              to=""
-              className="flex items-center bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg transition-colors"
-            >
-              <div className="bg-white/20 p-2 rounded-lg mr-4">
-                <span className="text-2xl">⚔️</span>
-              </div>
-              <div className="text-left">
-                <div className="text-xl font-semibold">
-                  Play with match making
-                </div>
-                <div className="text-sm text-white/80">
-                  Play with a random opponent at your level
-                </div>
-              </div>
-            </Link>
+            {socketConnected && (
+              <>
+                <Link
+                  to="/playing-chess-friends"
+                  className="flex items-center bg-[#82bf56] hover:bg-[#75ad4d] text-white p-4 rounded-lg transition-colors"
+                >
+                  <div className="bg-white/20 p-2 rounded-lg mr-4">
+                    <span className="text-2xl">👥</span>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xl font-semibold">
+                      Play With Friends
+                    </div>
+                    <div className="text-sm text-white/80">
+                      Play with your friends by sharing the room id
+                    </div>
+                  </div>
+                </Link>
+                <Link
+                  onClick={() => {
+                    toast("Feature releasing soon...", {
+                      icon: "🔨",
+                    });
+                  }}
+                  to=""
+                  className="flex items-center bg-gray-700 hover:bg-gray-600 text-white p-4 rounded-lg transition-colors"
+                >
+                  <div className="bg-white/20 p-2 rounded-lg mr-4">
+                    <span className="text-2xl">⚔️</span>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xl font-semibold">
+                      Play with match making
+                    </div>
+                    <div className="text-sm text-white/80">
+                      Play with a random opponent at your level
+                    </div>
+                  </div>
+                </Link>{" "}
+              </>
+            )}
           </div>
         </div>
       </div>
