@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { ChessManager } from "../chess_class/ChessManager.js";
 
+import { IDEL_TIMEOUT } from "../constants/socket_constants.js";
+
 let gameRooms = new Map();
 // {
 //   roomId,
@@ -16,6 +18,27 @@ export const socketIoHandler = (io) => {
 
     // Store socket id and room mapping
     let currentRoom = null;
+    // disconnect the socket when user haven't make move for 5 mins
+    let idleTimer;
+
+    // handler function
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimer);
+
+      idleTimer = setTimeout(() => {
+        // send kick message to the kicked player
+        socket.emit("server:idle_timeout");
+
+        socket.disconnect(true);
+      }, IDEL_TIMEOUT);
+    };
+
+    resetIdleTimer();
+
+    // reset timer in every socket event
+    socket.onAny(() => {
+      resetIdleTimer();
+    });
 
     // modify => login system
     socket.on("room:create", (data) => {

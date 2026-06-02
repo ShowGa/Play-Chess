@@ -9,6 +9,12 @@ socket.on("connect_error", () => {
   toast.error("Server is now shut down");
 });
 
+socket.on("server:idle_timeout", () => {
+  toast.error(
+    "You have being kick for not moving in 5 minutes ! Please rejoin again .",
+  );
+});
+
 // console.log("Socket client initialize");
 
 export default socket;
