@@ -3,11 +3,15 @@ import { Chessboard } from "react-chessboard";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import socket from "../socket/socket";
+import FunctionButton from "../components/button/FunctionButton";
 
 const Home = () => {
   const [socketConnected, setSocketConnected] = useState(socket.connected);
 
   const handleConnectSocketServer = () => {
+    toast("Connecting the server !", {
+      icon: "❗",
+    });
     socket.connect();
   };
 
@@ -40,22 +44,11 @@ const Home = () => {
 
           <div className="flex flex-col gap-4">
             {!socketConnected && (
-              <button
-                className="flex items-center bg-[#82bf56] hover:bg-[#75ad4d] text-white p-4 rounded-lg transition-colors"
-                onClick={handleConnectSocketServer}
-              >
-                <div className="bg-white/20 p-2 rounded-lg mr-4">
-                  <span className="text-2xl">👥</span>
-                </div>
-                <div className="text-left">
-                  <div className="text-xl font-semibold">
-                    Connect to the server
-                  </div>
-                  <div className="text-sm text-white/80">
-                    Try to connect to server, play with online opponent
-                  </div>
-                </div>
-              </button>
+              <FunctionButton
+                onClickEvnt={handleConnectSocketServer}
+                iconPrefix="iconoir"
+                iconName="internet"
+              />
             )}
 
             {socketConnected && (
