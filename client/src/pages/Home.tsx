@@ -8,7 +8,6 @@ import FunctionButton from "../components/button/FunctionButton";
 const Home = () => {
   const [socketConnected, setSocketConnected] = useState(socket.connected);
   const [loading, setLoading] = useState(false);
-  console.log(loading);
 
   const handleConnectSocketServer = () => {
     toast("Connecting the server !", {
@@ -36,8 +35,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="py-10 pl-[15rem] min-h-[100vh] h-1 bg-gray-800">
-      <div className="flex gap-4 h-full w-full">
+    <div className="py-10 min-h-[100vh] h-1 bg-gray-800">
+      <div className="flex gap-4 h-full w-full justify-center">
         <div className="flex-shrink flex-grow max-w-[42rem] h-full w-full">
           <div className="rounded-md overflow-hidden">
             <Chessboard />
