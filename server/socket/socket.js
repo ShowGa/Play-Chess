@@ -36,7 +36,7 @@ export const socketIoHandler = (io) => {
     resetIdleTimer();
 
     // check clients counts
-    if (io.engine.clientsCount > 1) {
+    if (io.engine.clientsCount > 30) {
       socket.emit("server:full");
       socket.disconnect(true);
       return;
@@ -50,7 +50,7 @@ export const socketIoHandler = (io) => {
     // modify => login system
     socket.on("room:create", (data) => {
       // check the clients amount hit the limitation (40)
-      if (io.engine.clientsCount > 1) {
+      if (io.engine.clientsCount > 30) {
         socket.emit("server:full");
         socket.disconnect(true);
         return;
