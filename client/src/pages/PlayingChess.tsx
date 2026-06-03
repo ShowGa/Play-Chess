@@ -9,6 +9,7 @@ import { useChess } from "../context/ChessContext";
 import CreateJoinSec from "../components/room_right_section/CreateJoinSec";
 import RoomInfoSec from "../components/room_right_section/RoomInfoSec";
 import RematchRequestModal from "../components/RematchConfirmModal";
+import toast from "react-hot-toast";
 
 const WaitingModal = lazy(() => import("../components/WaitingModal"));
 
@@ -26,8 +27,6 @@ const PlayingChess = () => {
     showConfirmationModal,
     showWaitingModal,
   } = useChess();
-
-  console.log(fen);
 
   // ========== Zustand state ========== //
   const { user } = useAuthStore();
@@ -47,7 +46,7 @@ const PlayingChess = () => {
 
   const joinRoom = () => {
     if (!inputRef?.current?.value) {
-      console.log("Please enter the room to join !");
+      toast.error("Please enter the room code from you friend to join !");
       return;
     }
 
