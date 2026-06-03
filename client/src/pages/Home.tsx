@@ -7,23 +7,31 @@ import FunctionButton from "../components/button/FunctionButton";
 
 const Home = () => {
   const [socketConnected, setSocketConnected] = useState(socket.connected);
+  const [loading, setLoading] = useState(false);
+  console.log(loading);
 
   const handleConnectSocketServer = () => {
     toast("Connecting the server !", {
       icon: "❗",
     });
+    setLoading(true);
     socket.connect();
   };
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      setSocketConnected(true);
+  const socketHandlerConnect = () => {
+    setSocketConnected(true);
+    setLoading(false);
+  };
+  const socketHandlerConnectError = () => {
+    setLoading(false);
+  };
 
-      toast.success("Connect to server successfully");
-    });
+  useEffect(() => {
+    socket.on("connect", socketHandlerConnect);
+    socket.on("connect_error", socketHandlerConnectError);
 
     return () => {
-      socket.off("connect");
+      socket.off("connect", socketHandlerConnect);
     };
   }, []);
 
@@ -48,6 +56,7 @@ const Home = () => {
                 onClickEvnt={handleConnectSocketServer}
                 iconPrefix="iconoir"
                 iconName="internet"
+                loading={loading}
               />
             )}
 

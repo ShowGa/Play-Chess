@@ -9,9 +9,9 @@ const FunctionButton = ({
   onClickEvnt,
   iconPrefix,
   iconName,
-  // loading,
+  loading,
 }: FunctionButtonProps) => {
-  // const loadingIconURL = "https://api.iconify.design/eos-icons/loading.svg";
+  const loadingIconURL = "https://api.iconify.design/eos-icons/loading.svg";
   const customIcon = `https://api.iconify.design/${iconPrefix}/${iconName}.svg`;
 
   return (
@@ -22,7 +22,11 @@ const FunctionButton = ({
       }}
     >
       <div className="bg-white/20 p-2 rounded-lg mr-4">
-        <img src={customIcon} width={40} height={40} />
+        <img
+          src={loading ? loadingIconURL : customIcon}
+          width={40}
+          height={40}
+        />
       </div>
       <div className="text-left">
         <div className="text-xl font-semibold">Connect to the server</div>
