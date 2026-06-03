@@ -272,10 +272,6 @@ export const useChessLogic = () => {
     navigate("/"); // Navigate to home page
   };
 
-  const handleServerFull = () => {
-    toast.error("Server is now full . Please Try again later !");
-  };
-
   // socket.io effect
   useEffect(() => {
     if (!socket) return;
@@ -349,10 +345,6 @@ export const useChessLogic = () => {
       handlePlayerDisconnection();
     });
 
-    socket.on("server:full", () => {
-      handleServerFull();
-    });
-
     return () => {
       socket.off("room:created");
       socket.off("room:joined");
@@ -362,7 +354,6 @@ export const useChessLogic = () => {
       socket.off("chess:game-restart");
       socket.off("room:updated");
       socket.off("player:disconnected");
-      socket.off("server:full");
     };
   }, [navigate]); // Add navigate to dependencies
 

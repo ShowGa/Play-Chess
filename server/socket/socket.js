@@ -35,6 +35,13 @@ export const socketIoHandler = (io) => {
 
     resetIdleTimer();
 
+    // check clients counts
+    if (io.engine.clientsCount > 1) {
+      socket.emit("server:full");
+      socket.disconnect(true);
+      return;
+    }
+
     // reset timer in every socket event
     socket.onAny(() => {
       resetIdleTimer();
@@ -42,9 +49,11 @@ export const socketIoHandler = (io) => {
 
     // modify => login system
     socket.on("room:create", (data) => {
-      // check the room amount hit the limitation (25)
-      if (gameRooms.size >= 20) {
-        return socket.emit("server:full");
+      // check the clients amount hit the limitation (40)
+      if (io.engine.clientsCount > 1) {
+        socket.emit("server:full");
+        socket.disconnect(true);
+        return;
       }
 
       // create roomId

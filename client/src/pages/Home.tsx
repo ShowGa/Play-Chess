@@ -16,6 +16,10 @@ const Home = () => {
     setLoading(true);
     socket.connect();
   };
+  const handleServerFull = () => {
+    toast.error("Server is now full . Please Try again later !");
+    setSocketConnected(false);
+  };
 
   const socketHandlerConnect = () => {
     setSocketConnected(true);
@@ -28,9 +32,12 @@ const Home = () => {
   useEffect(() => {
     socket.on("connect", socketHandlerConnect);
     socket.on("connect_error", socketHandlerConnectError);
+    socket.on("server:full", handleServerFull);
 
     return () => {
       socket.off("connect", socketHandlerConnect);
+      socket.off("connect_error", socketHandlerConnectError);
+      socket.off("server:full", handleServerFull);
     };
   }, []);
 
