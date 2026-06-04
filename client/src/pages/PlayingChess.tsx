@@ -1,5 +1,5 @@
 import { Chessboard } from "react-chessboard";
-import { useRef, Suspense, lazy, useEffect } from "react";
+import { useRef, Suspense, lazy } from "react";
 
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
