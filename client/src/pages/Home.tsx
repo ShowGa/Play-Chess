@@ -10,14 +10,11 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   const handleConnectSocketServer = () => {
-    toast("Connecting the server !", {
-      icon: "❗",
-    });
     setLoading(true);
     socket.connect();
   };
   const handleServerFull = () => {
-    toast.error("Server is now full . Please Try again later !");
+    toast.error("The server is now full. Please try again later");
     setSocketConnected(false);
   };
 

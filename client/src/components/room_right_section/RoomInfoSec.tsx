@@ -47,7 +47,7 @@ const RoomInfoSec = () => {
 
   const handleEmoteSelect = (gifUrl: string) => {
     if (!roomInfo || !you || yourEmote) {
-      toast.error("Wait a moment for sending another emote");
+      toast.error("Please wait a moment for sending another emote");
       setShowEmoteSelector(false);
       return;
     }
@@ -84,7 +84,7 @@ const RoomInfoSec = () => {
   const handleCopyRoomId = () => {
     navigator.clipboard.writeText(roomInfo?.roomId || "");
     setCopyRoomId(true);
-    toast.success("Room ID copied to clipboard");
+    toast.success("Copied !");
   };
 
   useEffect(() => {

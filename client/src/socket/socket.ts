@@ -8,16 +8,16 @@ const socket = SocketIO(API_URL || "http://localhost:8080", {
 });
 
 socket.on("connect", () => {
-  toast.success("Connect to server successfully");
+  // toast.success("Connect to server successfully");
 });
 
 socket.on("connect_error", () => {
-  toast.error("Server is now shut down");
+  toast.error("The server is now offline");
 });
 
 socket.on("server:idle_timeout", () => {
   toast.error(
-    "You have being kick for not moving in 5 minutes ! Please rejoin again .",
+    "You have been kicked for being inactive for 5 minutes. Please rejoin the server.",
   );
 });
 
