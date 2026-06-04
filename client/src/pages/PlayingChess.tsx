@@ -1,5 +1,5 @@
 import { Chessboard } from "react-chessboard";
-import { useRef, Suspense, lazy } from "react";
+import { useRef, Suspense, lazy, useEffect } from "react";
 
 import socket from "../socket/socket";
 import useAuthStore from "../zustand/useAuthStore";
@@ -10,6 +10,7 @@ import CreateJoinSec from "../components/room_right_section/CreateJoinSec";
 import RoomInfoSec from "../components/room_right_section/RoomInfoSec";
 import RematchRequestModal from "../components/RematchConfirmModal";
 import toast from "react-hot-toast";
+import { Navigate } from "react-router-dom";
 
 const WaitingModal = lazy(() => import("../components/WaitingModal"));
 
@@ -29,7 +30,8 @@ const PlayingChess = () => {
   } = useChess();
 
   // ========== Zustand state ========== //
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+  const socketId = useAuthStore((state) => state.socketId);
 
   // ========== useRef ========== //
   const inputRef = useRef<HTMLInputElement>(null);
@@ -58,6 +60,8 @@ const PlayingChess = () => {
 
     if (inputRef) socket.emit("room:join", data);
   };
+
+  if (!socketId) return <Navigate to="/" />;
 
   return (
     <div className="py-10 min-h-[100vh] h-1 bg-gray-800">

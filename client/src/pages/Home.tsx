@@ -4,8 +4,11 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import socket from "../socket/socket";
 import FunctionButton from "../components/button/FunctionButton";
+import useAuthStore from "../zustand/useAuthStore";
 
 const Home = () => {
+  const setSocketId = useAuthStore((state) => state.setSocketId);
+
   const [socketConnected, setSocketConnected] = useState(socket.connected);
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +24,7 @@ const Home = () => {
   const socketHandlerConnect = () => {
     setSocketConnected(true);
     setLoading(false);
+    setSocketId(socket.id);
   };
   const socketHandlerConnectError = () => {
     setLoading(false);
