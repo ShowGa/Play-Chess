@@ -258,6 +258,9 @@ export const socketIoHandler = (io) => {
     socket.on("disconnect", () => {
       // console.log(`User disconnected: ${socket.id}`);
 
+      // clear timer
+      clearTimeout(idleTimer);
+
       if (currentRoom) {
         const room = gameRooms.get(currentRoom);
         if (room) {
