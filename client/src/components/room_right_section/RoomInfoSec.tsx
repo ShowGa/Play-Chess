@@ -26,12 +26,15 @@ const RoomInfoSec = () => {
 
   const [messages, setMessages] = useState<MessageData[]>([]);
   const [messageInput, setMessageInput] = useState<string>("");
+  const [canSendMsg, setCanSendMsg] = useState<boolean>(true);
 
   const [copyRoomId, setCopyRoomId] = useState<boolean>(false);
 
   const handleSendMessage = () => {
     if (!roomInfo || !you) return;
     if (messageInput.trim() === "") return;
+    if (!canSendMsg)
+      return toast.error("Please wait a moment for sending another message");
 
     const message: MessageData = {
       roomId: roomInfo?.roomId,
@@ -43,6 +46,11 @@ const RoomInfoSec = () => {
 
     setMessageInput("");
     setMessages((prevMessages) => [...prevMessages, message]);
+    setCanSendMsg(false);
+
+    setTimeout(() => {
+      setCanSendMsg(true);
+    }, 2000);
   };
 
   const handleEmoteSelect = (gifUrl: string) => {
