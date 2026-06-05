@@ -24,7 +24,7 @@ const Home = () => {
   const socketHandlerConnect = () => {
     setSocketConnected(true);
     setLoading(false);
-    setSocketId(socket.id);
+    setSocketId(socket.id || null);
   };
   const socketHandlerConnectError = () => {
     setLoading(false);

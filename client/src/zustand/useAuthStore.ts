@@ -10,7 +10,7 @@ interface UserState {
   socketId: string | null;
   setUser: (user: User) => void;
   removeUser: () => void;
-  setSocketId: (id: string) => void;
+  setSocketId: (id: string | null) => void;
 }
 
 const randomNum = Math.floor(Math.random() * 1000);
@@ -22,7 +22,7 @@ const useAuthStore = create<UserState>((set) => ({
   setUser: (user: User) => set({ user }),
   removeUser: () => set({ user: null }),
 
-  setSocketId: (id: string) => set({ socketId: id }),
+  setSocketId: (id: string | null) => set({ socketId: id }),
 }));
 
 export default useAuthStore;

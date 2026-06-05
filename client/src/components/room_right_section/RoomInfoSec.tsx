@@ -31,7 +31,8 @@ const RoomInfoSec = () => {
   const [copyRoomId, setCopyRoomId] = useState<boolean>(false);
 
   const handleSendMessage = () => {
-    if (!roomInfo || !you) return;
+    if (!friend || !roomInfo || !you) 
+      return toast.error("You cannot send message before your opponent join !");
     if (messageInput.trim() === "") return;
     if (!canSendMsg)
       return toast.error("Please wait a moment for sending another message");
@@ -54,7 +55,10 @@ const RoomInfoSec = () => {
   };
 
   const handleEmoteSelect = (gifUrl: string) => {
-    if (!roomInfo || !you || yourEmote) {
+    if (!friend || !roomInfo || !you) {
+      return toast.error("You cannot send emote before your opponent join !");
+    }
+    if (yourEmote) {
       toast.error("Please wait a moment for sending another emote");
       setShowEmoteSelector(false);
       return;
