@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { ChessManager } from "../chess_class/ChessManager.js";
 
-import { IDEL_TIMEOUT } from "../constants/socket_constants.js";
+import { IDLE_TIMEOUT } from "../constants/socket_constants.js";
 
 let gameRooms = new Map();
 // {
@@ -30,7 +30,7 @@ export const socketIoHandler = (io) => {
         socket.emit("server:idle_timeout");
 
         socket.disconnect(true);
-      }, IDEL_TIMEOUT);
+      }, IDLE_TIMEOUT);
     };
 
     resetIdleTimer();
