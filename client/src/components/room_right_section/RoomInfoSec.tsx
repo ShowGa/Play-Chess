@@ -13,6 +13,7 @@ import EmoteMessageBox from "./EmoteMessageBox";
 const RoomInfoSec = () => {
   const { roomInfo, you, friend } = useChess();
 
+  const chatRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const [showEmoteSelector, setShowEmoteSelector] = useState(false);
   const [yourEmote, setYourEmote] = useState<{
@@ -99,6 +100,16 @@ const RoomInfoSec = () => {
     toast.success("Copied !");
   };
 
+  const isAtBottom = () => {
+    const el = chatRef.current;
+    if (!el) return true;
+
+    const distanceToBottom =
+    el.scrollHeight - el.scrollTop - el.clientHeight;
+
+    return distanceToBottom < 50;
+  };
+
   useEffect(() => {
     socket.on("message:receive", handleReceiveMessage);
     socket.on("emote:receive", handleReceiveEmote);
@@ -109,8 +120,17 @@ const RoomInfoSec = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [messages]);
+
   useEffect(() => {
-    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    const ele = chatRef.current;
+    if (!ele) return;
+
+    if (isAtBottom()) {
+      ele.scrollTop = ele.scrollHeight;
+    }
   }, [messages]);
 
   return (
@@ -159,7 +179,7 @@ const RoomInfoSec = () => {
       {/* chat section */}
       <div className="flex-grow flex flex-col gap-2">
         {/* chat messages */}
-        <div className="text-white max-h-[55vh] h-full overflow-auto overflow-x-hidden p-2">
+        <div ref={chatRef} className="text-white max-h-[55vh] h-full overflow-auto overflow-x-hidden p-2">
           {messages.map((message, index) => (
             <div key={index} ref={lastMessageRef} className="mb-2">
               <Message message={message} />
