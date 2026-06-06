@@ -268,6 +268,7 @@ export const useChessLogic = () => {
       duration: 3000,
     });
 
+    socket.disconnect();
     resetGameState();
     navigate("/"); // Navigate to home page
   };
