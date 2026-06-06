@@ -377,6 +377,7 @@ export const useChessLogic = () => {
     promotionMove,
     handleRematch,
     handleRematchConfirmation,
+    resetGameState,
     showConfirmationModal,
     rematchMessage,
     showWaitingModal,

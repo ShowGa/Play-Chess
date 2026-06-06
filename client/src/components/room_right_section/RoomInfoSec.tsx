@@ -11,7 +11,7 @@ import EmoteSelector from "./EmoteSelector";
 import EmoteMessageBox from "./EmoteMessageBox";
 
 const RoomInfoSec = () => {
-  const { roomInfo, you, friend } = useChess();
+  const { roomInfo, you, friend, resetGameState } = useChess();
 
   const chatRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const RoomInfoSec = () => {
   const [copyRoomId, setCopyRoomId] = useState<boolean>(false);
 
   const handleSendMessage = () => {
-    if (!friend || !roomInfo || !you) 
+    if (!friend || !roomInfo || !you)
       return toast.error("You cannot send message before your opponent join !");
     if (messageInput.trim() === "") return;
     if (!canSendMsg)
@@ -100,12 +100,16 @@ const RoomInfoSec = () => {
     toast.success("Copied !");
   };
 
+  const handleReturnLobby = () => {
+    socket.disconnect();
+    resetGameState();
+  };
+
   const isAtBottom = () => {
     const el = chatRef.current;
     if (!el) return true;
 
-    const distanceToBottom =
-    el.scrollHeight - el.scrollTop - el.clientHeight;
+    const distanceToBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
 
     return distanceToBottom < 50;
   };
@@ -179,7 +183,10 @@ const RoomInfoSec = () => {
       {/* chat section */}
       <div className="flex-grow flex flex-col gap-2">
         {/* chat messages */}
-        <div ref={chatRef} className="text-white max-h-[47vh] h-full overflow-auto overflow-x-hidden p-2">
+        <div
+          ref={chatRef}
+          className="text-white max-h-[47vh] h-full overflow-auto overflow-x-hidden p-2"
+        >
           {messages.map((message, index) => (
             <div key={index} ref={lastMessageRef} className="mb-2">
               <Message message={message} />
@@ -227,7 +234,22 @@ const RoomInfoSec = () => {
 
       {/* functional buttons */}
       <div>
-        <div className="flex items-center gap-2 justify-evenly">
+        <div className="flex items-center gap-4 justify-between">
+          <button
+            onClick={handleReturnLobby}
+            className={
+              "bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-all duration-300 flex justify-center align-middle gap-1"
+            }
+          >
+            <img
+              src=" https://api.iconify.design/pepicons-pop/leave.svg?color=red"
+              height={24}
+              width={24}
+              style={{ transform: "scaleX(-1)" }}
+            />
+            <p className="text-white text-md font-semibold">Lobby</p>
+          </button>
+
           <button
             onClick={handleCopyRoomId}
             className={`bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ${
